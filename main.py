@@ -29,17 +29,15 @@ def multiplicProbability(probA, probB):
     prob = 1 - (1-probA) * (1-probB)
     return prob
 
-def getAMultiplier(Q, t):
-    a = Q**(1/t - 1)
-    #a = - ((1-Q)**(1/t)) / (Q-1)
-    #a = - ((Q)**(1/t)) / (Q-1)
-    return a
+def getPValue(Q, t):
+    P = Q**(1/t)
+    return P
 
 def testFunction(Q, t):
     #zero = (Q * Q**(-1 + 1/t) )**t - Q
-    a = getAMultiplier(1-Q, t)
-    print("a: " + str(a))
-    zero = 1-((1-Q) * a )**t - Q
-    print("Q * a: " + str(round(Q*a, 4)))
+    P = getPValue(1-Q, t)
+    print("P: " + str(P))
+    zero = 1-(1-P )**t - Q
+    print("Q * a: " + str(round(P, 4)))
     zero = round(zero, 7)
     return zero

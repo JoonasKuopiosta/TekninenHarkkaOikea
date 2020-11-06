@@ -7,6 +7,7 @@ Created on Tue Oct 27 20:09:05 2020
 
 import main
 from person import Person
+from vector import *
 
 print("TESTING BEGINS")
 
@@ -15,8 +16,8 @@ class Test:
     healthy = 0
     
     def resetTest(self):
-        self.infected = Person(0,0,main.INFECTIOUS)
-        self.healthy = Person(0,0,main.SUSPECTIBLE)
+        self.infected = Person(Vector2(0,0), main.INFECTIOUS)
+        self.healthy = Person(Vector2(0,0), main.SUSPECTIBLE)
     
     
     def test1(self):
@@ -55,13 +56,13 @@ class Test:
     
     
     def test4(self):
-        diff = 0;
+        diff = 0
         
-        diff += main.getAMultiplier(1/2, 10) - 2**(9/10)
+        diff += main.getPValue(1/2, 10) - 2**(1/10)
         
-        diff += main.getAMultiplier(1/10, 10) - 10**(9/10)
+        diff += main.getPValue(1/10, 10) - 10**(1/10)
         
-        diff += main.getAMultiplier(1/2, 20) - 2**(19/20)
+        diff += main.getPValue(1/2, 20) - 2**(1/20)
         
         if (diff < 0.000001):
             print("test4: succ")
@@ -77,13 +78,12 @@ class Test:
         # let's say that every hour has 100 iterations
         realChance = 0.75 #1-0.015
         cumulativeChance = 1.0
-        t = 11
-        a = main.getAMultiplier(realChance, t)
-        print("a: " + str(a))
+        t = 111
         for i in range(0, t):
             chance = self.healthy.receiveExposure(self.infected)
+            P = main.getPValue(chance, t)
             #print(str(chance))
-            cumulativeChance *= chance*a
+            cumulativeChance *= P
         
         cumulativeChance = cumulativeChance
         

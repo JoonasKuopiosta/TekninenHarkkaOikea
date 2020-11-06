@@ -24,10 +24,10 @@ MAX_INFECTION_DISTANCE = 10
 
 class Person:
     
-    def __init__(self, x, y, type):
+    def __init__(self, position, type):
         # Cordinates
-        self.x = x
-        self.y = y
+        self.x = position.x
+        self.y = position.y
         # Health 0 -> 1, where 0 is dead
         self.health = 1
         # Status following SIR classification
