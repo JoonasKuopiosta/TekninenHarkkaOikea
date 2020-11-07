@@ -28,6 +28,11 @@ class Vector2:
         self.y = self.y * A * B * C * D
     
 
+    def sumVec(self, vector):
+        self.x = self.x + vector.x
+        self.y = self.y + vector.y
+    
+
     def getClone(self):
         # Returns a clone of the vector
         return Vector2(self.x, self.y)
@@ -46,8 +51,10 @@ class Vector2:
         newVec.multiply(1/length)
         return newVec
 
-
     def getLength(self):
         # Euclidian distance
         return math.sqrt( self.x**2 + self.y**2 )
+    
+    def getRotation(self):
+        pass
     

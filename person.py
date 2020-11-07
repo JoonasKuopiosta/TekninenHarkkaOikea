@@ -8,6 +8,7 @@ Created on Tue Oct 27 21:15:02 2020
 import math
 import random
 import main
+from vector import *
 
 SUSPECTIBLE = "S"
 INFECTIOUS = "I"
@@ -35,6 +36,11 @@ class Person:
         # Would ideally be from 0 to 1
         self.riskOfNOTinfection = 1.0
         self.hasMask = False
+        self.speed = 1
+        self.moveVector = Vector2(0,0)
+    
+    def getPosition(self):
+        return Vector2(self.x, self.y)
     
     
     # Min = 0.0
@@ -129,3 +135,14 @@ class Person:
         # Reset exposure
         self.exposureCumulative = 0
         return 1
+
+    def stepMove(self, deltaTime):
+
+        # Start with the current position
+        nextPosition = self.getPosition()
+        # Get the movement and multiply with delta time and speed
+        movement = self.moveVector.getClone()
+        movement.multiply(deltaTime, self.speed)
+        # Sum movement to current position to get next position
+        nextPosition.sumVec(movement)
+        pass

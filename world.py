@@ -20,3 +20,6 @@ class World:
             person = Person(randVec, "S")
             personList.append(person)
     
+    def isAcceptableLocation(self, cords):
+        return True
+    
