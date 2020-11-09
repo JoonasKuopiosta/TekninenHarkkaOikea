@@ -4,7 +4,7 @@ Created on Tue Oct 27 15:31:36 2020
 
 @author: leipu
 """
-
+from tqdm import tqdm
 import math
 import random
 from world import World
@@ -28,6 +28,7 @@ MAX_INFECTION_DISTANCE = 10
 
 #TODO:
 # Fix vector to use funcs, so vector is only one ot use funcs
+# https://pypi.org/project/tqdm/
 
 def mainLoop():
 
@@ -36,10 +37,9 @@ def mainLoop():
     _world = World(100, 100, 10)
     _world.generatePeople()
 
-    i = 0
-    while(i < 100000):
+    max = 100000
+    for i in tqdm(range(max)):
         _world.step()
-        i += 1
     
     _world.printAll()
 

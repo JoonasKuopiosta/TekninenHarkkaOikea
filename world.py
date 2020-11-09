@@ -1,6 +1,8 @@
 
 from vector import *
 from person import Person
+import math
+import random
 
 personList = []
 
@@ -19,6 +21,10 @@ class World:
             randVec = randomVector(10, 10, self.width-10, self.height-10)
             person = Person(randVec, "S")
             personList.append(person)
+            # Randomizing direction
+            randRads = random.random()*2*math.pi
+            dirVec = funcs.getUnitCircleFromRads(randRads)
+            person.directionVec = Vector2(dirVec[0], dirVec[1])
     
     def isAcceptableLocation(self, cords):
         return True
