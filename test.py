@@ -141,11 +141,13 @@ class Test:
     def test7(self):
 
         diff = 0
-        diff += 2 - main.sumRads(1,1) # 2 rads
-        diff += 0.9*2*math.pi - main.sumRads(12,0) # 12 rads
-        diff += 0.38*2*math.pi - main.sumRads(0,-30) # -30 rads
-        diff += 0 - main.sumRads(0,0) # 0 rads
-        diff += 0.73*2*math.pi - main.sumRads(100,-20) # 80 rads
+        diff += 2               - main.sumRads(1,1) # 2 rads
+        diff += 0.9*2*math.pi   - main.sumRads(12,0) # 12 rads
+        diff += 0.38*2*math.pi  - main.sumRads(0,-30) # -30 rads
+        diff += 0               - main.sumRads(0,0) # 0 rads
+        diff += 0.73*2*math.pi  - main.sumRads(100,-20) # 80 rads
+        diff += 2*math.pi       - main.sumRads(2*math.pi,0) # 2 pi rads
+        diff += 2*math.pi       - main.sumRads(-2*math.pi,0) # - 2 pi rads
         
 
         if (diff < 0.000000001):

@@ -52,12 +52,14 @@ def getUnitCircleRotation(position):
     return rads
 
 
+# Reduces the given sum to 0 - 2pi range
+# Accepts negative values so substraction is thus possible
 def sumRads(A, B):
     total = A + B
 
     if (total < 0):
 
-        while (total < 0):
+        while (total > 0):
             total += 2*math.pi
     
     elif (total > 2*math.pi):
