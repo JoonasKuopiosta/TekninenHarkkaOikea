@@ -7,7 +7,7 @@ Created on Tue Oct 27 21:15:02 2020
 
 import math
 import random
-import main
+import funcs
 from vector import *
 
 SUSPECTIBLE = "S"
@@ -37,7 +37,8 @@ class Person:
         self.riskOfNOTinfection = 1.0
         self.hasMask = False
         self.speed = 1
-        self.moveVector = Vector2(0,0)
+        # Unit vector
+        self.directionVec = Vector2(0,0)
     
     def getPosition(self):
         return Vector2(self.x, self.y)
@@ -118,6 +119,11 @@ class Person:
     # More logic here?
     def changeStatus(self, newStatus):
         self.status = newStatus
+
+
+    def moveTo(self, position):
+        self.x = position.x
+        self.y = position.y
             
         
     # Run every step of simulation
@@ -136,13 +142,37 @@ class Person:
         self.exposureCumulative = 0
         return 1
 
-    def stepMove(self, deltaTime):
+    def stepMove(self):
 
         # Start with the current position
         nextPosition = self.getPosition()
-        # Get the movement and multiply with delta time and speed
-        movement = self.moveVector.getClone()
-        movement.multiply(deltaTime, self.speed)
+        # Get the movement and multiply with speed
+        movement = self.directionVec.getClone()
+        movement.multiply(self.speed)
         # Sum movement to current position to get next position
         nextPosition.sumVec(movement)
-        pass
+
+        self.moveTo(nextPosition)
+
+        self.randomizeDirection(0.2)
+
+    def randomizeDirection(self, magnitude):
+
+        # Replace with gaussian?
+        rnd = random.random() * magnitude
+        
+        # Get current rotation
+        rads = funcs.getUnitCircleRads(self.directionVec)
+        # Add the randomness
+        newRads = funcs.sumRads(rnd, rads)
+        # Get new vector from that rotation
+        xy = funcs.getUnitCircleFromRads(newRads)
+        newVec = Vector2(xy[0], xy[1])
+        # Assign the new vector
+        self.directionVec = newVec
+
+        return newVec
+    
+    def toString(self):
+        txt = str(self.x) + " : " + str(self.y)
+        return txt

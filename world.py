@@ -23,3 +23,13 @@ class World:
     def isAcceptableLocation(self, cords):
         return True
     
+
+    def step(self):
+
+        for person in personList:
+            person.stepMove()
+    
+
+    def printAll(self):
+        for person in personList:
+            print(person.toString())

@@ -4,10 +4,10 @@ Created on Tue Oct 27 20:09:05 2020
 
 @author: leipu
 """
-
 import main
 from person import Person
 from vector import *
+import funcs
 
 print("TESTING BEGINS")
 
@@ -65,11 +65,11 @@ class Test:
     def test4(self):
         diff = 0
         
-        diff += main.getPValue(1/2, 10) - 2**(1/10)
+        diff += funcs.getPValue(1/2, 10) - 2**(1/10)
         
-        diff += main.getPValue(1/10, 10) - 10**(1/10)
+        diff += funcs.getPValue(1/10, 10) - 10**(1/10)
         
-        diff += main.getPValue(1/2, 20) - 2**(1/20)
+        diff += funcs.getPValue(1/2, 20) - 2**(1/20)
         
         if (diff < 0.000001):
             print("Test 4 success")
@@ -90,7 +90,7 @@ class Test:
         t = 111
         for i in range(0, t):
             chance = self.healthy.receiveExposure(self.infected)
-            P = main.getPValue(chance, t)
+            P = funcs.getPValue(chance, t)
             #print(str(chance))
             cumulativeChance *= P
         
@@ -111,27 +111,27 @@ class Test:
 
         # Top right
         pos = Vector2((1/2), (math.sqrt(3)/2))
-        diff += (main.getUnitCircleRotation(pos) - math.pi/3)
+        diff += (funcs.getUnitCircleRads(pos) - math.pi/3)
 
         # Top left
         pos = Vector2((- math.sqrt(3)/2), (1/2))
-        diff += (main.getUnitCircleRotation(pos) - math.pi*5/6)
+        diff += (funcs.getUnitCircleRads(pos) - math.pi*5/6)
 
         # Bot left
         pos = Vector2((- math.sqrt(2)/2), (- math.sqrt(2)/2))
-        diff += (main.getUnitCircleRotation(pos) - math.pi*5/4)
+        diff += (funcs.getUnitCircleRads(pos) - math.pi*5/4)
 
         # Bot right
         pos = Vector2((1/2), (-math.sqrt(3)/2))
-        diff += (main.getUnitCircleRotation(pos) - math.pi*5/3)
+        diff += (funcs.getUnitCircleRads(pos) - math.pi*5/3)
 
         # (1,0) right
         pos = Vector2((1), (0))
-        diff += (main.getUnitCircleRotation(pos) - 0)
+        diff += (funcs.getUnitCircleRads(pos) - 0)
 
         # (0,-1) bottom
         pos = Vector2(0, -1)
-        diff += (main.getUnitCircleRotation(pos) - math.pi*3/2)
+        diff += (funcs.getUnitCircleRads(pos) - math.pi*3/2)
 
         if (diff < 0.00000001):
             print("Test 6 success")
@@ -141,13 +141,13 @@ class Test:
     def test7(self):
 
         diff = 0
-        diff += 2               - main.sumRads(1,1) # 2 rads
-        diff += 0.9*2*math.pi   - main.sumRads(12,0) # 12 rads
-        diff += 0.38*2*math.pi  - main.sumRads(0,-30) # -30 rads
-        diff += 0               - main.sumRads(0,0) # 0 rads
-        diff += 0.73*2*math.pi  - main.sumRads(100,-20) # 80 rads
-        diff += 2*math.pi       - main.sumRads(2*math.pi,0) # 2 pi rads
-        diff += 2*math.pi       - main.sumRads(-2*math.pi,0) # - 2 pi rads
+        diff += 2               - funcs.sumRads(1,1) # 2 rads
+        diff += 0.9*2*math.pi   - funcs.sumRads(12,0) # 12 rads
+        diff += 0.38*2*math.pi  - funcs.sumRads(0,-30) # -30 rads
+        diff += 0               - funcs.sumRads(0,0) # 0 rads
+        diff += 0.73*2*math.pi  - funcs.sumRads(100,-20) # 80 rads
+        diff += 2*math.pi       - funcs.sumRads(2*math.pi,0) # 2 pi rads
+        diff += 2*math.pi       - funcs.sumRads(-2*math.pi,0) # - 2 pi rads
         
 
         if (diff < 0.000000001):

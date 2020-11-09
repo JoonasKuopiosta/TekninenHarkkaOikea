@@ -7,6 +7,8 @@ Created on Tue Oct 27 15:31:36 2020
 
 import math
 import random
+from world import World
+from vector import Vector2
 
 SUSPECTIBLE = "S"
 INFECTIOUS = "I"
@@ -24,47 +26,25 @@ POTENCY_100 = 10
 
 MAX_INFECTION_DISTANCE = 10
 
+#TODO:
+# Fix vector to use funcs, so vector is only one ot use funcs
 
-def multiplicProbability(probA, probB):
-    prob = 1 - (1-probA) * (1-probB)
-    return prob
+def mainLoop():
 
-def getPValue(Q, t):
-    P = Q**(1/t)
-    return P
+    print("Beginning of main loop")
 
-# Gets the rotation for UNITCIRCLES!!!!
-def getUnitCircleRotation(position):
-    x = position.x
-    y = position.y
+    _world = World(100, 100, 10)
+    _world.generatePeople()
 
-    # Math hax
-    # Because of the nature of acos, where it mirrors values
-    # to both sides of x-axis, we check if y is + or - to determine
-    # which side of x-axis we actually at
-    # No need to worry, there are test to make sure this works xd
-
-    if (y >= 0): # Top part of unit circle
-        rads = math.acos(x)
-    else: # Bottom part of unit circle
-        rads = 2*math.pi - math.acos(x)
-
-    return rads
-
-
-# Reduces the given sum to 0 - 2pi range
-# Accepts negative values so substraction is thus possible
-def sumRads(A, B):
-    total = A + B
-
-    if (total < 0):
-
-        while (total > 0):
-            total += 2*math.pi
+    i = 0
+    while(i < 100000):
+        _world.step()
+        i += 1
     
-    elif (total > 2*math.pi):
+    _world.printAll()
 
-        while (total < 2*math.pi):
-            total -= 2*math.pi
-    
-    return total
+    print("End of main loop")
+
+
+# Call to the main loop
+mainLoop()
