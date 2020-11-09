@@ -26,8 +26,11 @@ class Test:
         # Maximum exposure
         exposure = self.healthy.receiveExposure(self.infected)
         
+        # Doesn't work because of inverse logic
         if ( (1.0 - exposure) < 0.000001):
-            print("test1: succ")
+            print("Test 1 success")
+        else:
+            print("Test 1 failed : " + str(exposure))
 
     
     def test2(self):
@@ -40,7 +43,9 @@ class Test:
         exposure = self.healthy.receiveExposure(self.infected)
         
         if ( (0.015 - exposure) < 0.000001):
-            print("test2: succ")
+            print("Test 2 success")
+        else:
+            print("Test 2 failed")
         
         
     def test3(self):
@@ -52,7 +57,9 @@ class Test:
         exposure = self.healthy.receiveExposure(self.infected)
         
         if ( (0.25 - exposure) < 0.000001):
-            print("test3: succ")
+            print("Test 3 success")
+        else:
+            print("Test 3 failed")
     
     
     def test4(self):
@@ -65,7 +72,9 @@ class Test:
         diff += main.getPValue(1/2, 20) - 2**(1/20)
         
         if (diff < 0.000001):
-            print("test4: succ")
+            print("Test 4 success")
+        else:
+            print("Test 4 failed")
     
     
     def test5(self):
@@ -87,9 +96,63 @@ class Test:
         
         cumulativeChance = cumulativeChance
         
-        print("cumulative: " + str(cumulativeChance))
+        #print("cumulative: " + str(cumulativeChance))
         diff = realChance - (cumulativeChance)
-        print("diff: " + str(diff))
+        #print("diff: " + str(diff))
+        if (diff < 0.00000001):
+            print("Test 5 success")
+        else:
+            print("Test 5 failed : " + str(diff))
+                
+
+    def test6(self):
+
+        diff = 0
+
+        # Top right
+        pos = Vector2((1/2), (math.sqrt(3)/2))
+        diff += (main.getUnitCircleRotation(pos) - math.pi/3)
+
+        # Top left
+        pos = Vector2((- math.sqrt(3)/2), (1/2))
+        diff += (main.getUnitCircleRotation(pos) - math.pi*5/6)
+
+        # Bot left
+        pos = Vector2((- math.sqrt(2)/2), (- math.sqrt(2)/2))
+        diff += (main.getUnitCircleRotation(pos) - math.pi*5/4)
+
+        # Bot right
+        pos = Vector2((1/2), (-math.sqrt(3)/2))
+        diff += (main.getUnitCircleRotation(pos) - math.pi*5/3)
+
+        # (1,0) right
+        pos = Vector2((1), (0))
+        diff += (main.getUnitCircleRotation(pos) - 0)
+
+        # (0,-1) bottom
+        pos = Vector2(0, -1)
+        diff += (main.getUnitCircleRotation(pos) - math.pi*3/2)
+
+        if (diff < 0.00000001):
+            print("Test 6 success")
+        else:
+            print("Test 6 failed " + str(diff))
+    
+    def test7(self):
+
+        diff = 0
+        diff += 2 - main.sumRads(1,1) # 2 rads
+        diff += 0.9*2*math.pi - main.sumRads(12,0) # 12 rads
+        diff += 0.38*2*math.pi - main.sumRads(0,-30) # -30 rads
+        diff += 0 - main.sumRads(0,0) # 0 rads
+        diff += 0.73*2*math.pi - main.sumRads(100,-20) # 80 rads
+        
+
+        if (diff < 0.000000001):
+            print("Test 7 success")
+        else:
+            print("Test 7 failed " + str(diff))
+
             
     
 
@@ -99,5 +162,7 @@ test.test2()
 test.test3()
 test.test4()
 test.test5()
+test.test6()
+test.test7()
 
 print("TESTING ENDS")

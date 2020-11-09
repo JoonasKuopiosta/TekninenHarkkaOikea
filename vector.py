@@ -1,6 +1,7 @@
 
 import random
 import math
+import main
 
 def randomVector(minX, minY, maxX, maxY):
     # Creates a pseudo random vector that has X- and Y-values from min to max
@@ -56,5 +57,5 @@ class Vector2:
         return math.sqrt( self.x**2 + self.y**2 )
     
     def getRotation(self):
-        pass
+        return main.getUnitCircleRotation(self.getUnitVector())
     
