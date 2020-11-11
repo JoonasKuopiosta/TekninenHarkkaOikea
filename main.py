@@ -5,10 +5,8 @@ Created on Tue Oct 27 15:31:36 2020
 @author: leipu
 """
 from tqdm import tqdm
-import math
-import random
 from world import World
-from vector import Vector2
+import dataProcessing
 
 SUSPECTIBLE = "S"
 INFECTIOUS = "I"
@@ -26,22 +24,37 @@ POTENCY_100 = 10
 
 MAX_INFECTION_DISTANCE = 10
 
-#TODO:
+ITERATION_STEP_IN_MINUTES = 60
+
+# TODO:
 # Fix vector to use funcs, so vector is only one ot use funcs
 # https://pypi.org/project/tqdm/
+
+# UNITS
+# - meters
+# - minutes
 
 def mainLoop():
 
     print("Beginning of main loop")
 
-    _world = World(100, 100, 10)
-    _world.generatePeople()
+    # width, height, population
+    _world = World(100, 100, 20)
+    _world.generatePeople(10) # input value is how many infected
 
-    max = 100000
+    dataProcessing.initial(_world.getPersonList())
+
+    max = 24*7
     for i in tqdm(range(max)):
         _world.step()
+
+        # process data every x iteration
+        if i % (24) == 0:
+            dataProcessing.dataStep(_world.getPersonList(), i)
     
-    _world.printAll()
+    dataProcessing.final(_world.getPersonList())
+
+    #_world.printAll()
 
     print("End of main loop")
 

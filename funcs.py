@@ -14,11 +14,9 @@ def getUnitCircleRads(position):
     x = position.x
     y = position.y
 
-    # Math hax
     # Because of the nature of acos, where it mirrors values
     # to both sides of x-axis, we check if y is + or - to determine
     # which side of x-axis we actually at
-    # No need to worry, there are test to make sure this works xd
 
     if (y >= 0): # Top part of unit circle
         rads = math.acos(x)
