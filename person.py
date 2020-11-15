@@ -21,24 +21,28 @@ INFECTION_MULTIPLIER = 1.0
 POTENCY_MIN = 0.1
 POTENCY_100 = 10
 
-MAX_INFECTION_DISTANCE = 10
+# distance in meters
+MAX_INFECTION_DISTANCE = 3
+
 
 class Person:
-    
-    def __init__(self, position, type):
-        # Cordinates
+
+    def __init__(self, world, position, status = SUSPECTIBLE):
+        # Cordinates meters
         self.x = position.x
         self.y = position.y
         # Health 0 -> 1, where 0 is dead
         self.health = 1
         # Status following SIR classification
-        self.status = SUSPECTIBLE
+        self.status = status
         # Would ideally be from 0 to 1
         self.riskOfNOTinfection = 1.0
         self.hasMask = False
+        # How fast is person, meters per minute
         self.speed = 1
         # Unit vector
         self.directionVec = Vector2(0,0)
+        self.world = world
     
     def getPosition(self):
         return Vector2(self.x, self.y)
@@ -106,12 +110,13 @@ class Person:
     # Max = 1.0
     def exposurePropability(self):
         # Test if current exposure is more than min gap
+        exposure = 1 - self.riskOfNOTinfection
         propability = 0
-        if (self.exposureCumulative >= POTENCY_MIN):
-            if (self.exposureCumulative >= POTENCY_100):
+        if (exposure >= POTENCY_MIN):
+            if (exposure >= POTENCY_100):
                 propability = 1
             else:
-                propability = self.exposureCumulative / POTENCY_100
+                propability = exposure / POTENCY_100
         
         return propability
     
@@ -137,9 +142,19 @@ class Person:
             probability *= deltaTime / (60*60)
             if( random.random() < probability):
                 self.changeStatus(INFECTIOUS)
+        
+        if (self.status == INFECTIOUS):
+            # As infectious go through every person
+            for person in self.world.getPersonList():
+                # If the person is suspectible
+                if (self.status == SUSPECTIBLE):
+                    # And is within maximum range
+                    if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
+                        # expose them
+                        person.receiveExposure(self)
                 
         # Reset exposure
-        self.exposureCumulative = 0
+        self.riskOfNOTinfection = 0
         return 1
 
     def stepMove(self):
@@ -151,6 +166,11 @@ class Person:
         movement.multiply(self.speed)
         # Sum movement to current position to get next position
         nextPosition.sumVec(movement)
+
+        if self.world.checkLocation(nextPosition):
+            movement.multiply(-2)
+            nextPosition.sumVec(movement)
+
 
         self.moveTo(nextPosition)
 
@@ -174,5 +194,6 @@ class Person:
         return newVec
     
     def toString(self):
-        txt = str(self.x) + " : " + str(self.y)
+        #txt = str(self.x) + " : " + str(self.y)
+        txt = self.status
         return txt
