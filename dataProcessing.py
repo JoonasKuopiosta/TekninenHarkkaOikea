@@ -1,4 +1,4 @@
-import plotly.figure_factory as ff
+import plotly.graph_objects as go
 import numpy as np
 import csv
 
@@ -53,14 +53,34 @@ def final():
     print("THL DATA: ", infectedTHL, "length: ", len(infectedTHL))
     print("SIM DATA: ", infectedSim, "length: ", len(infectedSim))
 
-    # Group the data together: THL data will be compared with 2 weeks
-    # worth of simulated data
-    histData = [infectedTHL, infectedSim]
+    listOfDays = list(range(1, 15)) # [1, 2, ..., 13, 14]
     
-    groupLabels = ['THL:n koronadata', 'Simulaation data']
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter(
+            x = listOfDays,
+            y = infectedTHL,
+            name = "THL data"
+        ))
     
-    # Create distplot with custom bin_size
-    fig = ff.create_distplot(histData, groupLabels, bin_size=.2)
+    fig.add_trace(
+        go.Scatter(
+            x = listOfDays,
+            y = infectedSim,
+            name = "Simulaation data"
+        ))
+    
+    fig.update_layout(
+        title="Simulaation tulosten vertailu COVID-19-dataan",
+        xaxis_title="Päivä",
+        yaxis_title="Tartuntojen lukumäärä",
+        legend_title="Kuvaajat",
+        font=dict(
+            size=12
+        )
+    )
+    
     fig.show()
     
 def readCSV(fileName):

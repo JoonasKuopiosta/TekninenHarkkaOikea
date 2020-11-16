@@ -1,16 +1,30 @@
-import numpy as np
-import plotly.figure_factory as ff
+import plotly.graph_objects as go
 
-# PLOT MULTIPLE DATASETS
+fig = go.Figure()
 
-# Add histogram data
-# array([-2.2708057 , -2.75716544, -1.54042334, -1.38073464, -0.07946814, -1.64880929, -1.43580834])
+fig.add_trace(
+    go.Scatter(
+        x = range(1, 14),
+        y = [1.5, 1, 1.3, 0.7, 0.8, 0.9],
+        title = "THL data"
+    ))
 
-# Group the data together
-histData = [infectedTHL, infectedSim]
+fig.add_trace(
+    go.Bar(
+        x = range(1, 14),
+        y = [1, 0.5, 0.7, -1.2, 0.3, 0.4],
+        title = "Simulaation data"
+    ))
 
-groupLabels = ['THL:n koronadata', 'Simulaation data']
-
-# Create distplot with custom bin_size
-fig = ff.create_distplot(histData, groupLabels, bin_size=.2)
 fig.show()
+
+# Group the data together: THL data will be compared with 2 weeks
+    # worth of simulated data
+    histData = [infectedTHL, infectedSim]
+    
+    groupLabels = ['THL:n koronadata', 'Simulaation data']
+    
+    # PLOT: x = days 1...14, y = number of infected per day
+    # Create distplot with custom bin_size
+    fig = ff.create_distplot(histData, groupLabels, bin_size=.2)
+    fig.show()
