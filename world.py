@@ -20,8 +20,13 @@ class World:
             # Maybe make a create person method?!?
             randVec = randomVector(10, 10, self.width-10, self.height-10)
             person = Person(self, randVec, "S")
-            if (n < self.count/2):
+
+            # Generate as many infected people as we want
+            if (howManyInfected > 0):
+                # Reduce one from the howManyInfected so it does exactly that many infected people
                 person.status = "I"
+                howManyInfected -= 1
+            
             personList.append(person)
             # Randomizing direction
             randRads = random.random()*2*math.pi
