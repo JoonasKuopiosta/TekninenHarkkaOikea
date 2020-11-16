@@ -39,20 +39,25 @@ def mainLoop():
     print("Beginning of main loop")
 
     # width, height, population
-    _world = World(100, 100, 20)
-    _world.generatePeople(10) # input value is how many infected
+    _world = World(10000, 10000, 100)
+    infectedT0 = 1
+    _world.generatePeople(infectedT0) # input value is how many infected in the beginning
 
-    dataProcessing.initial(_world.getPersonList())
+    # The first values of the SIR-model are sent to dataProcessing for drawing a graph:
+    # sends in a personList which is in the form (I, S, S, S, S, S, ...)
+    # from the list we need to find the nodes "I" to draw the graph of infected day by day
+    dataProcessing.initial(infectedT0)
 
-    max = 24*7
+    max = 24*13 # 14 days period
     for i in tqdm(range(max)):
         _world.step()
 
         # process data every x iteration
         if i % (24) == 0:
-            dataProcessing.dataStep(_world.getPersonList(), i)
+            # list of infected is updated in every round
+            dataProcessing.dataStep(_world.getPersonList())
     
-    dataProcessing.final(_world.getPersonList())
+    dataProcessing.final()
 
     #_world.printAll()
 
