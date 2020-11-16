@@ -27,7 +27,7 @@ def initial(noInfected):
  # This will be then formed into a graph, which will then be compared to a graph of
  # the corona virus infected (THL) to estimate if our simulation is good enough.
 def dataStep(listOfPeople):
-    totalInfected = np.sum(infectedSim)
+    totalInfected = np.sum(infectedSim) # sum of all infected so far
     # listOfPeople is filled with Person-objects. We are interested in the person.status
     noInfected = 0
     for person in listOfPeople:

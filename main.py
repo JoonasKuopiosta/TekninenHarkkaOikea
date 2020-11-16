@@ -39,7 +39,7 @@ def mainLoop():
     print("Beginning of main loop")
 
     # width, height, population
-    _world = World(100, 100, 20)
+    _world = World(10000, 10000, 100)
     infectedT0 = 1
     _world.generatePeople(infectedT0) # input value is how many infected in the beginning
 
