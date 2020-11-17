@@ -9,6 +9,7 @@ import math
 import random
 import funcs
 from vector import *
+import graphics
 
 SUSPECTIBLE = "S"
 INFECTIOUS = "I"
@@ -43,6 +44,10 @@ class Person:
         # Unit vector
         self.directionVec = Vector2(0,0)
         self.world = world
+        
+        center = graphics.Point(0,0)
+        self.circle = graphics.Circle(center, 1)
+        self.circle.setFill('blue')
     
     def getPosition(self):
         return Vector2(self.x, self.y)
@@ -132,14 +137,14 @@ class Person:
             
         
     # Run every step of simulation
-    def step(self, deltaTime):
+    def step(self, stepTime):
         # Run at each step
         # If the Person is suspectible
         if (self.status == SUSPECTIBLE):
             # Probability for infection
             probability = self.exposurePropability()
             # deltaTime in seconds divided by hour
-            probability *= deltaTime / (60*60)
+            probability *= stepTime / (60*60)
             if( random.random() < probability):
                 self.changeStatus(INFECTIOUS)
         
@@ -157,13 +162,14 @@ class Person:
         self.riskOfNOTinfection = 0
         return 1
 
-    def stepMove(self):
+    def stepMove(self, stepTime):
 
         # Start with the current position
         nextPosition = self.getPosition()
         # Get the movement and multiply with speed
         movement = self.directionVec.getClone()
         movement.multiply(self.speed)
+        movement.multiply(stepTime)
         # Sum movement to current position to get next position
         nextPosition.sumVec(movement)
 
@@ -197,3 +203,6 @@ class Person:
         #txt = str(self.x) + " : " + str(self.y)
         txt = self.status
         return txt
+    
+    def getDraw(self):
+        return self.circle
