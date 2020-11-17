@@ -51,11 +51,11 @@ class World:
         return personList
     
 
-    def step(self):
+    def step(self, stepTime):
 
         for person in personList:
-            person.step(1)
-            person.stepMove()
+            person.step(stepTime)
+            person.stepMove(stepTime)
     
 
     def printAll(self):
