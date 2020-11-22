@@ -24,7 +24,7 @@ class World:
             # Generate as many infected people as we want
             if (howManyInfected > 0):
                 # Reduce one from the howManyInfected so it does exactly that many infected people
-                person.status = "I"
+                person.changeStatus("I")
                 howManyInfected -= 1
             
             personList.append(person)

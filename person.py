@@ -52,7 +52,7 @@ class Person:
         # Determines if the person is infected, but not yet infectious
         self.isInfected = False
         # Time like everything else is measured in minutes
-        self.timeSinceInfection = 0;
+        self.timeSinceInfection = 0
     
     def getPosition(self):
         return Vector2(self.x, self.y)
