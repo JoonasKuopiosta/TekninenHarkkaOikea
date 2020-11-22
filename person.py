@@ -8,6 +8,7 @@ Created on Tue Oct 27 21:15:02 2020
 import math
 import random
 import funcs
+from funcs import reflectionVector
 from vector import *
 import graphics
 
@@ -32,15 +33,21 @@ class Person:
         # Cordinates meters
         self.x = position.x
         self.y = position.y
+
         # Health 0 -> 1, where 0 is dead
         self.health = 1
+
         # Status following SIR classification
         self.status = status
+
         # Would ideally be from 0 to 1
         self.riskOfNOTinfection = 1.0
         self.hasMask = False
+
         # How fast is person, meters per minute
+        # TODO: Better value
         self.speed = 1
+
         # Unit vector
         self.directionVec = Vector2(0,0)
         self.world = world
@@ -51,6 +58,7 @@ class Person:
         
         # Determines if the person is infected, but not yet infectious
         self.isInfected = False
+        
         # Time like everything else is measured in minutes
         self.timeSinceInfection = 0
     
@@ -209,9 +217,13 @@ class Person:
         # Sum movement to current position to get next position
         nextPosition.sumVec(movement)
 
-        if self.world.checkLocation(nextPosition):
-            movement.multiply(-2)
+        # Test if reaching world border
+        # TODO: Reflecting from surface, whre checkLocation returns sufrace vector
+        surfaceVector = self.world.checkLocation(nextPosition)
+        if surfaceVector:
+            movement.multiply(-1)
             nextPosition.sumVec(movement)
+            self.reflectDirectionFromSurface(surfaceVector)
 
 
         self.moveTo(nextPosition)
@@ -221,7 +233,7 @@ class Person:
     def randomizeDirection(self, magnitude):
 
         # Replace with gaussian?
-        rnd = random.random() * magnitude
+        rnd = random.random() * magnitude - (magnitude/2)
         
         # Get current rotation
         rads = funcs.getUnitCircleRads(self.directionVec)
@@ -234,6 +246,15 @@ class Person:
         self.directionVec = newVec
 
         return newVec
+    
+    def reflectDirectionFromSurface(self, surfaceVector):
+        
+        reflectionVector = self.directionVec.getReflection(surfaceVector)
+
+        self.directionVec = reflectionVector
+        return reflectionVector
+
+
     
     def toString(self):
         #txt = str(self.x) + " : " + str(self.y)
