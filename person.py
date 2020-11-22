@@ -46,8 +46,13 @@ class Person:
         self.world = world
         
         center = graphics.Point(0,0)
-        self.circle = graphics.Circle(center, 1)
-        self.circle.setFill('blue')
+        self.circle = graphics.Circle(center, 5)
+        self.circle.setFill('green')
+        
+        # Determines if the person is infected, but not yet infectious
+        self.isInfected = False
+        # Time like everything else is measured in minutes
+        self.timeSinceInfection = 0;
     
     def getPosition(self):
         return Vector2(self.x, self.y)
@@ -126,9 +131,18 @@ class Person:
         return propability
     
     
-    # More logic here?
+    # Use this when changing status!!!
     def changeStatus(self, newStatus):
         self.status = newStatus
+        
+        # Change the buble color according to status
+        if (newStatus == SUSPECTIBLE):
+            self.circle.setFill('green')
+        elif (newStatus == INFECTIOUS):
+            self.circle.setFill('red')
+        elif (newStatus == RESISTANT):
+            self.circle.setFill('blue')
+            
 
 
     def moveTo(self, position):
@@ -139,14 +153,35 @@ class Person:
     # Run every step of simulation
     def step(self, stepTime):
         # Run at each step
+        
+        # If infection has been received
+        # (determined by the next if block)
+        # increase the timeSinceInfection
+        # Which is in minutes
+        if (self.isInfected):
+            self.timeSinceInfection += stepTime
+        
+        
         # If the Person is suspectible
         if (self.status == SUSPECTIBLE):
-            # Probability for infection
-            probability = self.exposurePropability()
-            # deltaTime in seconds divided by hour
-            probability *= stepTime / (60*60)
-            if( random.random() < probability):
-                self.changeStatus(INFECTIOUS)
+            if (not self.isInfected):
+                # If not infected yet, roll the infection chance
+                # Probability for infection
+                probability = self.exposurePropability()
+                # deltaTime in seconds divided by hour
+                probability *= stepTime / (60*60)
+                if( random.random() < probability):
+                    # Sets the isInfected to True
+                    self.isInfected = True
+            else:
+                # If not infected but has already received infection
+                # TODO: Here is the calculation for time 
+                # Since the stepTime is in minutes and becoming actively
+                # infected requires few days
+                fewDays = 2*24*60
+                if (self.timeSinceInfection >= fewDays):
+                    # If enough time has passed change status
+                    self.changeStatus(INFECTIOUS)
         
         if (self.status == INFECTIOUS):
             # As infectious go through every person
@@ -157,6 +192,7 @@ class Person:
                     if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
                         # expose them
                         person.receiveExposure(self)
+            
                 
         # Reset exposure
         self.riskOfNOTinfection = 0

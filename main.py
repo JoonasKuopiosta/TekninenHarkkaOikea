@@ -55,7 +55,7 @@ def mainLoop():
     # from the list we need to find the nodes "I" to draw the graph of infected day by day
     dataProcessing.initial(infectedT0)
     
-    time.sleep(1)
+    time.sleep(3)
 
     max = 24*13 # 14 days period
     for i in tqdm(range(max)):
@@ -67,10 +67,10 @@ def mainLoop():
             dataProcessing.dataStep(_world.getPersonList())
         
         # animate data every x iteration
-        if i % (12) == 0:
+        if i % (1) == 0:
             # animates the given data
             animation.animationStep(_world.getPersonList())
-            time.sleep(0.1)
+            time.sleep(0.01)
     
     dataProcessing.final()
     

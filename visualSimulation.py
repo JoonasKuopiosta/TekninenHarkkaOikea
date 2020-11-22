@@ -1,4 +1,5 @@
 from graphics import *
+import time
 
 class VisualSimulation:
 
@@ -42,6 +43,8 @@ class VisualSimulation:
     
     
     def animationFinal(self):
+        time.sleep(1)
+        self.win.getMouse() # Waits the user to click the screen
         self.win.close()
     
     
