@@ -24,7 +24,7 @@ class World:
             # Generate as many infected people as we want
             if (howManyInfected > 0):
                 # Reduce one from the howManyInfected so it does exactly that many infected people
-                person.status = "I"
+                person.changeStatus("I")
                 howManyInfected -= 1
             
             personList.append(person)
@@ -35,14 +35,15 @@ class World:
     
     def checkLocation(self, cords):
 
+        # Return the surface vector
         if (cords.x < 0): # Left side
-            return True
+            return Vector2(1,0)
         elif (cords.x > self.width): # Right side
-            return True
+            return Vector2(-1,0)
         elif (cords.y < 0): # Top side
-            return True
+            return Vector2(0,-1)
         elif (cords.y > self.height): # Bottom side
-            return True
+            return Vector2(0,1)
         
         return False
 

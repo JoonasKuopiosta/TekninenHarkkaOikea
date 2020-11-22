@@ -1,4 +1,5 @@
 import math
+import numpy as np
 
 
 def multiplicProbability(probA, probB):
@@ -50,3 +51,13 @@ def getUnitCircleFromRads(rads):
     y = math.sin(rads)
 
     return [x, y]
+
+
+# https://en.wikipedia.org/wiki/Reflection_%28mathematics%29#Reflection_across_a_line_in_the_plane
+def reflectionVector(impact, surface):
+    v = np.array(impact)
+    a = np.array(surface)
+
+    refl = v - 2*( np.dot(v,a) / np.dot(a,a) ) * a
+    arrayRefl = [refl[0], refl[1]]
+    return arrayRefl

@@ -26,6 +26,9 @@ POTENCY_100 = 10
 
 MAX_INFECTION_DISTANCE = 10
 
+# The length of one iteration in minutes
+# 60 = one iteration is one hour
+# 60*24 = 1440 = one iteration is one day
 ITERATION_STEP_IN_MINUTES = 60
 
 # TODO:

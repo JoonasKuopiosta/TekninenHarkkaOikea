@@ -3,6 +3,7 @@ import random
 import math
 import funcs
 
+
 def randomVector(minX, minY, maxX, maxY):
     # Creates a pseudo random vector that has X- and Y-values from min to max
     xVal = random.random()
@@ -58,4 +59,15 @@ class Vector2:
     
     def getRotation(self):
         return funcs.getUnitCircleRads(self.getUnitVector())
+    
+    def getReflection(self, Nvector):
+
+        v = [self.x, self.y] # The vector impacting
+        a = [Nvector.x, Nvector.y] # The surface vector
+
+        reflection = funcs.reflectionVector(v, a)
+
+        # Assign the reflection values to self
+        newVector = Vector2(reflection[0], reflection[1])
+        return newVector
     
