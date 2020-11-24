@@ -14,7 +14,7 @@ class World:
         self.count = count
     
 
-    def generatePeople(self, howManyInfected = 1):
+    def generatePeople(self, howManyInfected):
         
         for n in range(0, self.count):
             # Maybe make a create person method?!?
