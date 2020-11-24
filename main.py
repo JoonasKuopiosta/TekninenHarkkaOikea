@@ -7,7 +7,7 @@ Created on Tue Oct 27 15:31:36 2020
 from tqdm import tqdm
 from world import World
 from visualSimulation import VisualSimulation as VS
-import dataProcessing
+import newDataProcessing
 import time
 
 SUSPECTIBLE = "S"
@@ -46,8 +46,10 @@ def mainLoop():
     # width, height, population
     worldWidth  = 10000
     worldHeight = 10000
-    _world = World(worldWidth, worldHeight, 100)
-    infectedT0 = 2
+    worldPopulation = 100
+    _world = World(worldWidth, worldHeight, worldPopulation)
+    infectedT0 = 1
+    suspectibleT0 = worldPopulation - infectedT0
     _world.generatePeople(infectedT0) # input value is how many infected in the beginning
 
     # Initializing the animation
@@ -56,18 +58,19 @@ def mainLoop():
     # The first values of the SIR-model are sent to dataProcessing for drawing a graph:
     # sends in a personList which is in the form (I, S, S, S, S, S, ...)
     # from the list we need to find the nodes "I" to draw the graph of infected day by day
-    dataProcessing.initial(infectedT0)
+    newDataProcessing.initial(infectedT0, suspectibleT0)
     
     time.sleep(3)
 
-    max = 24*26 # 14 days period
+    noDays = 30 # simulation is done on a 14 days period
+    max = 24*(noDays-1) 
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES)
 
         # process data every x iteration
         if i % (24) == 0:
             # list of infected is updated in every round
-            dataProcessing.dataStep(_world.getPersonList())
+            newDataProcessing.dataStep(_world.getPersonList())
         
         # animate data every x iteration
         if i % (1) == 0:
@@ -75,9 +78,9 @@ def mainLoop():
             animation.animationStep(_world.getPersonList())
             time.sleep(0.01)
     
-    dataProcessing.final()
+    newDataProcessing.final(noDays)
     
-    animation.animationFinal()
+    #animation.animationFinal()
 
     #_world.printAll()
 
