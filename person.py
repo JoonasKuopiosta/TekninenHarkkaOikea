@@ -193,13 +193,19 @@ class Person:
         
         if (self.status == INFECTIOUS):
             # As infectious go through every person
-            for person in self.world.getPersonList():
-                # If the person is suspectible
-                if (self.status == SUSPECTIBLE):
-                    # And is within maximum range
-                    if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
-                        # expose them
-                        person.receiveExposure(self)
+            
+            # If more than seven days has passed become resistant
+            sevenDays = 7*24*60
+            if (self.timeSinceInfection >= sevenDays):
+                self.changeStatus(RESISTANT)
+            else:
+                for person in self.world.getPersonList():
+                    # If the person is suspectible
+                    if (self.status == SUSPECTIBLE):
+                        # And is within maximum range
+                        if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
+                            # expose them
+                            person.receiveExposure(self)
             
                 
         # Reset exposure
