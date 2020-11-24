@@ -47,7 +47,7 @@ def mainLoop():
     worldWidth  = 10000
     worldHeight = 10000
     _world = World(worldWidth, worldHeight, 100)
-    infectedT0 = 1
+    infectedT0 = 2
     _world.generatePeople(infectedT0) # input value is how many infected in the beginning
 
     # Initializing the animation
@@ -60,7 +60,7 @@ def mainLoop():
     
     time.sleep(3)
 
-    max = 24*13 # 14 days period
+    max = 24*26 # 14 days period
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES)
 
