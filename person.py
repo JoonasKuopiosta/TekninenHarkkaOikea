@@ -202,7 +202,7 @@ class Person:
             else:
                 for person in self.world.getPersonList():
                     # If the person is suspectible
-                    if (person.status == SUSPECTIBLE || not person.isInfected):
+                    if (person.status == SUSPECTIBLE or not person.isInfected):
                         # And is within maximum range
                         if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
                             # expose them
