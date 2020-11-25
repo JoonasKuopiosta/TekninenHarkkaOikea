@@ -145,8 +145,10 @@ class Person:
         # Change the buble color according to status
         if (newStatus == SUSPECTIBLE):
             self.circle.setFill('green')
+            self.isInfected = False
         elif (newStatus == INFECTIOUS):
             self.circle.setFill('red')
+            self.isInfected = True
         elif (newStatus == RESISTANT):
             self.circle.setFill('blue')
             
@@ -200,11 +202,16 @@ class Person:
             else:
                 for person in self.world.getPersonList():
                     # If the person is suspectible
-                    if (self.status == SUSPECTIBLE):
+                    if (person.status == SUSPECTIBLE || not person.isInfected):
                         # And is within maximum range
                         if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
                             # expose them
                             person.receiveExposure(self)
+        
+        
+        if (self.status == RESISTANT):
+            # Olli koodi
+            pass
             
                 
         # Reset exposure
