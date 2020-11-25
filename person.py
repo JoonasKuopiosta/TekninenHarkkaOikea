@@ -45,8 +45,7 @@ class Person:
         self.hasMask = False
 
         # How fast is person, meters per minute
-        # TODO: Better value
-        self.speed = 1
+        self.speed = random.random()*2 + 1
 
         # Unit vector
         self.directionVec = Vector2(0,0)
@@ -216,29 +215,35 @@ class Person:
 
         # Start with the current position
         nextPosition = self.getPosition()
+        
         # Get the movement and multiply with speed
         movement = self.directionVec.getClone()
         movement.multiply(self.speed)
         movement.multiply(stepTime)
+        
         # Sum movement to current position to get next position
         nextPosition.sumVec(movement)
 
         # Test if reaching world border
-        # TODO: Reflecting from surface, whre checkLocation returns sufrace vector
-        surfaceVector = self.world.checkLocation(nextPosition)
-        if surfaceVector:
+        # checkLocation( current position, next position )
+        normalVector = self.world.checkLocation(self.getPosition(), nextPosition)
+        # Test if either normal vector (true) or false is returned
+        if normalVector:
             movement.multiply(-1)
             nextPosition.sumVec(movement)
-            self.reflectDirectionFromSurface(surfaceVector)
+            self.reflectDirectionFromSurface(normalVector)
 
 
         self.moveTo(nextPosition)
 
         self.randomizeDirection(0.2)
+    
+    
 
     def randomizeDirection(self, magnitude):
 
         # Replace with gaussian?
+        # -0.1 -> 0.1
         rnd = random.random() * magnitude - (magnitude/2)
         
         # Get current rotation
