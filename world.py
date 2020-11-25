@@ -6,6 +6,8 @@ import random
 
 personList = []
 
+obstacleList = []
+
 class World:
 
     def __init__(self, width, height, count):
@@ -33,18 +35,28 @@ class World:
             dirVec = funcs.getUnitCircleFromRads(randRads)
             person.directionVec = Vector2(dirVec[0], dirVec[1])
     
-    def checkLocation(self, cords):
+    
+    # checkLocation stops population from escaping the area
+    # and other obstacles etc.
+    # Return False if there is no obstacle
+    # Return NORMAL VECTOR of the surface if there is a collision
+    def checkLocation(self, previousCords, nextCords):
 
         # Return the surface vector
-        if (cords.x < 0): # Left side
+        if (nextCords.x < 0): # Left side
             return Vector2(1,0)
-        elif (cords.x > self.width): # Right side
+        elif (nextCords.x > self.width): # Right side
             return Vector2(-1,0)
-        elif (cords.y < 0): # Top side
+        elif (nextCords.y < 0): # Top side
             return Vector2(0,-1)
-        elif (cords.y > self.height): # Bottom side
+        elif (nextCords.y > self.height): # Bottom side
             return Vector2(0,1)
         
+        for obstacle in obstacleList:
+            #obstacle.testaameneeköyli
+            pass
+        
+        # If false is returned we accept the nextCords
         return False
 
     
