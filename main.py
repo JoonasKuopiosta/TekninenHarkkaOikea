@@ -9,6 +9,7 @@ from world import World
 from visualSimulation import VisualSimulation as VS
 import newDataProcessing
 import time
+from obstacles import Obstacle
 
 SUSPECTIBLE = "S"
 INFECTIOUS = "I"
@@ -46,7 +47,7 @@ def mainLoop():
     # width, height, population
     worldWidth  = 10000
     worldHeight = 10000
-    worldPopulation = 100
+    worldPopulation = 50
     _world = World(worldWidth, worldHeight, worldPopulation)
     infectedT0 = 1
     suspectibleT0 = worldPopulation - infectedT0
@@ -54,6 +55,9 @@ def mainLoop():
 
     # Initializing the animation
     animation = VS(WIDTH, HEIGHT, worldWidth, worldHeight, _world.getPersonList())
+    # Obstacle should be created in form: x0, y0, x1, y1, win
+    #   (x0,y0) = start, (x1,y1) = end
+    obstacle = Obstacle(500, 0, 500, 400, animation.win)
 
     # The first values of the SIR-model are sent to dataProcessing for drawing a graph:
     # sends in a personList which is in the form (I, S, S, S, S, S, ...)
@@ -67,7 +71,7 @@ def mainLoop():
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES)
 
-        # process data every x iteration
+        # process data "day by day" for plotting graphs
         if i % (24) == 0:
             # list of infected is updated in every round
             newDataProcessing.dataStep(_world.getPersonList())
@@ -80,7 +84,7 @@ def mainLoop():
     
     newDataProcessing.final(noDays)
     
-    #animation.animationFinal()
+    animation.animationFinal()
 
     #_world.printAll()
 

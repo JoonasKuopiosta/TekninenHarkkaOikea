@@ -3,10 +3,10 @@ from vector import *
 from person import Person
 import math
 import random
+from obstacles import Obstacle
 
 personList = []
 
-obstacleList = []
 
 class World:
 
@@ -52,9 +52,24 @@ class World:
         elif (nextCords.y > self.height): # Bottom side
             return Vector2(0,1)
         
+        obstacleList = Obstacle.getObstacleList()
+        
         for obstacle in obstacleList:
-            #obstacle.testaameneeköyli
-            pass
+            # Check whether the person is somewhere in the height of the obstacle
+            if (obstacle.y0 <= previousCords.y <= obstacle.y1):
+                # Check whether the person wants to end up somewhere around, too
+                if (obstacle.y0 <= nextCords.y <= obstacle.y1):
+                    
+                    # NÄMÄ EI TOIMI: Pallerot edelleen törmää seinään - why?
+                    # Check if the person is approaching to the obstacle from the left:
+                    if (previousCords.x <= obstacle.x0 and nextCords.x >= obstacle.x0):
+                        print("Kolmas if")
+                        return Vector2(-1,0)
+                    
+                    # Check if the person is approaching to the obstacle from the right:
+                    elif (previousCords.x >= obstacle.x0 and nextCords.x <= obstacle.x0):
+                        print("Neljäs if")
+                        return Vector2(1,0)
         
         # If false is returned we accept the nextCords
         return False

@@ -60,7 +60,7 @@ def dataStep(listOfPeople):
 # After the iteration:
 # Plotting of the data day by day.
 def final(noDays):
-    print("Numbers of suspectible: ", suspectibleSim, "length: ", len(suspectibleSim))
+    print("\n\nNumbers of suspectible: ", suspectibleSim, "length: ", len(suspectibleSim))
     print("Numbers of infected: ", infectedSim, "length: ", len(infectedSim))
     print("Numbers of resistant: ", resistantSim, "length: ", len(resistantSim))
 
