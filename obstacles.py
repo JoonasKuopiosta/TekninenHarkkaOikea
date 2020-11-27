@@ -15,27 +15,25 @@ obstacleList = []
 
 class Obstacle:
     
-    def __init__(self, x0, y0, x1, y1, win):
+    def __init__(self, x0, y0, x1, y1):
         self.x0 = x0
         self.y0 = y0
         self.x1 = x1
         self.y1 = y1
-        self.win = win
         
         p1 = graphics.Point(x0, y0) # start point
         p2 = graphics.Point(x1, y1) # end point
         
         # Construct a line between the two points:
         self.line = graphics.Line(p1, p2)
-        self.line.draw(win)
         # Now the line is drawn in the animation window. 
         
         # Add all of the obstacles in the list for iterating through them
         # in the animation:
-        obstacleList.append(self)
+        
     
-    def getObstacleList():
-        return obstacleList
+    def getDraw(self):
+        return self.line
     
     
         

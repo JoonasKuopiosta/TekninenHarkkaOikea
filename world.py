@@ -7,6 +7,8 @@ from obstacles import Obstacle
 
 personList = []
 
+obstacleList = []
+
 
 class World:
 
@@ -14,6 +16,11 @@ class World:
         self.width = width
         self.height = height
         self.count = count
+        
+        # Obstacle should be created in form: x0, y0, x1, y1, win
+        #   (x0,y0) = start, (x1,y1) = end
+        obstacle = Obstacle(5000, 0, 5000, 6000)
+        obstacleList.append(obstacle)
     
 
     def generatePeople(self, howManyInfected):
@@ -52,7 +59,6 @@ class World:
         elif (nextCords.y > self.height): # Bottom side
             return Vector2(0,1)
         
-        obstacleList = Obstacle.getObstacleList()
         
         for obstacle in obstacleList:
             # Check whether the person is somewhere in the height of the obstacle
@@ -77,6 +83,9 @@ class World:
     
     def getPersonList(self):
         return personList
+    
+    def getObstacleList(self):
+        return obstacleList
     
 
     def step(self, stepTime):
