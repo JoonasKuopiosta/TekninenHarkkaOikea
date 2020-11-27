@@ -19,8 +19,19 @@ class World:
         
         # Obstacle should be created in form: x0, y0, x1, y1, win
         #   (x0,y0) = start, (x1,y1) = end
-        obstacle = Obstacle(5000, 0, 5000, 6000)
+        obstacle = Obstacle(5000, 0, 5000, 6000) # just a fence in the middle of the area
         obstacleList.append(obstacle)
+        
+        obstacle = Obstacle(5000, 8000, 5000, 10000) # just a fence in the middle of the area
+        obstacleList.append(obstacle)
+        
+        # creating the quarantine box on the left for infected individuals:
+        obstacle = Obstacle(1500, 0, 1500, self.height) # vertical line
+        obstacleList.append(obstacle)
+        
+        
+        #obstacle = Obstacle(0, 3000, 1500, 3000) # horizontal line
+        #obstacleList.append(obstacle)
     
 
     def generatePeople(self, howManyInfected):
@@ -69,12 +80,10 @@ class World:
                     # NÄMÄ EI TOIMI: Pallerot edelleen törmää seinään - why?
                     # Check if the person is approaching to the obstacle from the left:
                     if (previousCords.x <= obstacle.x0 and nextCords.x >= obstacle.x0):
-                        print("Kolmas if")
                         return Vector2(-1,0)
                     
                     # Check if the person is approaching to the obstacle from the right:
                     elif (previousCords.x >= obstacle.x0 and nextCords.x <= obstacle.x0):
-                        print("Neljäs if")
                         return Vector2(1,0)
         
         # If false is returned we accept the nextCords

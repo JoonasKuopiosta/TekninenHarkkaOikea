@@ -30,7 +30,7 @@ MAX_INFECTION_DISTANCE = 10
 # The length of one iteration in minutes
 # 60 = one iteration is one hour
 # 60*24 = 1440 = one iteration is one day
-ITERATION_STEP_IN_MINUTES = 10
+ITERATION_STEP_IN_MINUTES = 60
 
 # TODO:
 # Fix vector to use funcs, so vector is only one ot use funcs

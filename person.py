@@ -191,6 +191,20 @@ class Person:
                 if (self.timeSinceInfection >= fewDays):
                     # If enough time has passed change status
                     self.changeStatus(INFECTIOUS)
+                    
+                    # Itämisaika has passed -> First symptoms are noticed
+                    # -> 70% of palleros must go to quarantine!
+                    # (the rest don't notice symptoms or don't care)
+                    
+                    #self.goToQuarantine(self)
+                    
+                    # QUARANTINE MEANS:
+                        # ball sits still on the left side of the box with all
+                        # the other infected balls until X days has passed (7 days)
+                        
+                        # We need to keep quarantine area EMPTY from beginning.
+                        # In every iteration we check if self.timeSinceQuarantine >= week
+                        # if true -> release, if false -> pass
         
         if (self.status == INFECTIOUS):
             # As infectious go through every person
@@ -199,12 +213,13 @@ class Person:
             sevenDays = 7*24*60
             if (self.timeSinceInfection >= sevenDays):
                 self.changeStatus(RESISTANT)
+                #self.goOutOfQuarantine(self)
             else:
                 for person in self.world.getPersonList():
-                    # If the person is suspectible
-                    if (person.status == SUSPECTIBLE or not person.isInfected):
-                        # And is within maximum range
-                        if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
+                    # If the person is within maximum range
+                    if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
+                        # And if the person is suspectible
+                        if (person.status == SUSPECTIBLE or not person.isInfected):
                             # expose them
                             person.receiveExposure(self)
         
