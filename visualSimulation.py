@@ -3,7 +3,7 @@ import time
 
 class VisualSimulation:
 
-    def __init__(self, width, height, worldWidth, worldHeight, personList):
+    def __init__(self, width, height, worldWidth, worldHeight, personList, obstacleList):
         self.width          = width
         self.height         = height
         self.worldWidth     = worldWidth
@@ -11,11 +11,11 @@ class VisualSimulation:
         self.widthRatio     = width / worldWidth
         self.heightRatio    = height / worldHeight
         
-        self.win = self.graphicsInit(personList)
+        self.win = self.graphicsInit(personList, obstacleList)
         
     
     
-    def graphicsInit(self, personList):
+    def graphicsInit(self, personList, obstacleList):
         win = GraphWin(width = self.width, height = self.height, autoflush=False) # create a window
         win.setCoords(0, 0, self.width, self.height)
         
@@ -24,20 +24,35 @@ class VisualSimulation:
             circle = person.getDraw()
             circle.draw(win) # draw it to the window
         
+        for obstacle in obstacleList:
+            
+            #line = obstacle.getDraw()
+            #line.draw(win)
+            
+            cords0 = self.worldCordsToScreen([obstacle.x0, obstacle.y0])
+            cords1 = self.worldCordsToScreen([obstacle.x1, obstacle.y1])
+            
+            newPos0 = Point(cords0[0], cords0[1])
+            newPos1 = Point(cords1[0], cords1[1])
+            
+            newLine = Line(newPos0, newPos1)
+            obstacle.line = newLine
+            newLine.draw(win)
+        
         return win
         
 
 
-    def animationStep(self, personList):
+    def animationStep(self, personList, obstacleList):
         for person in personList:
+            
             cords = self.worldCordsToScreen([person.x, person.y])
             
             newPos = Point(cords[0], cords[1])
             
             circle = person.getDraw()
-            self.moveTo(circle, newPos)
+            self.moveCircleTo(circle, newPos)
             
-            #circle.setFill('blue')
         
         self.win.update()
     
@@ -59,7 +74,7 @@ class VisualSimulation:
         return [screenX, screenY]
     
     
-    def moveTo(self, shape, newCenter):
+    def moveCircleTo(self, shape, newCenter):
         myNewX = newCenter.getX()
         myNewY = newCenter.getY()
         
@@ -71,5 +86,7 @@ class VisualSimulation:
         shape.move(myXUpd, myYUpd)
         
         return myNewX, myNewY
+    
+    #def moveLineTo(self, line, newPos0, newPos1):
         
         

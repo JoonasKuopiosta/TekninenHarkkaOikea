@@ -54,10 +54,7 @@ def mainLoop():
     _world.generatePeople(infectedT0) # input value is how many infected in the beginning
 
     # Initializing the animation
-    animation = VS(WIDTH, HEIGHT, worldWidth, worldHeight, _world.getPersonList())
-    # Obstacle should be created in form: x0, y0, x1, y1, win
-    #   (x0,y0) = start, (x1,y1) = end
-    obstacle = Obstacle(500, 0, 500, 400, animation.win)
+    animation = VS(WIDTH, HEIGHT, worldWidth, worldHeight, _world.getPersonList(), _world.getObstacleList())
 
     # The first values of the SIR-model are sent to dataProcessing for drawing a graph:
     # sends in a personList which is in the form (I, S, S, S, S, S, ...)
@@ -79,7 +76,7 @@ def mainLoop():
         # animate data every x iteration
         if i % (1) == 0:
             # animates the given data
-            animation.animationStep(_world.getPersonList())
+            animation.animationStep(_world.getPersonList(), _world.getObstacleList())
             time.sleep(0.01)
     
     newDataProcessing.final(noDays)
