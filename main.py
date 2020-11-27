@@ -49,9 +49,12 @@ def mainLoop():
     worldHeight = 10000
     worldPopulation = 50
     _world = World(worldWidth, worldHeight, worldPopulation)
+    # How many infected at the beginning T0
     infectedT0 = 1
+    # How many % of people use masks
+    ratioOfMaskedPpl = 0.2
     suspectibleT0 = worldPopulation - infectedT0
-    _world.generatePeople(infectedT0) # input value is how many infected in the beginning
+    _world.generatePeople(infectedT0, ratioOfMaskedPpl) # input value is how many infected in the beginning
 
     # Initializing the animation
     animation = VS(WIDTH, HEIGHT, worldWidth, worldHeight, _world.getPersonList(), _world.getObstacleList())
@@ -63,7 +66,7 @@ def mainLoop():
     
     time.sleep(3)
 
-    noDays = 14 # simulation is done on a 14 days period
+    noDays = 24 # simulation is done on a 14 days period
     max = 24*(noDays-1) 
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES)

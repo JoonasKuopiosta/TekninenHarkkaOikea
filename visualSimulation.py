@@ -21,8 +21,9 @@ class VisualSimulation:
         
         for person in personList:
             
-            circle = person.getDraw()
-            circle.draw(win) # draw it to the window
+            shapes = person.getDraw()
+            for shape in shapes:
+                shape.draw(win) # draw it to the window
         
         for obstacle in obstacleList:
             
@@ -50,8 +51,9 @@ class VisualSimulation:
             
             newPos = Point(cords[0], cords[1])
             
-            circle = person.getDraw()
-            self.moveCircleTo(circle, newPos)
+            shapes = person.getDraw()
+            
+            self.movePersonGraphicsTo(shapes, newPos)
             
         
         self.win.update()
@@ -74,18 +76,21 @@ class VisualSimulation:
         return [screenX, screenY]
     
     
-    def moveCircleTo(self, shape, newCenter):
+    def movePersonGraphicsTo(self, shapes, newCenter):
+        
         myNewX = newCenter.getX()
         myNewY = newCenter.getY()
         
-        oldCenter = shape.getCenter()
-        
+        oldCenter = shapes[0].getCenter()
+            
         myXUpd = myNewX - oldCenter.getX()
         myYUpd = myNewY - oldCenter.getY()
         
-        shape.move(myXUpd, myYUpd)
+        for shape in shapes:
         
-        return myNewX, myNewY
+            shape.move(myXUpd, myYUpd)
+        
+        return True
     
     #def moveLineTo(self, line, newPos0, newPos1):
         
