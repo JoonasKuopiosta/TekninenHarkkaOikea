@@ -66,7 +66,7 @@ def mainLoop():
     
     time.sleep(3)
 
-    noDays = 14 # simulation is done on a 14 days period
+    noDays = 24 # simulation is done on a 14 days period
     max = 24*(noDays-1) 
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES)
