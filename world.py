@@ -34,7 +34,14 @@ class World:
         #obstacleList.append(obstacle)
     
 
-    def generatePeople(self, howManyInfected):
+    def generatePeople(self, howManyInfected, ratioOfMaskedPpl):
+        
+        howManyMasked = round(ratioOfMaskedPpl*self.count)
+        
+        # Black magic
+        tempList = list(range(self.count))
+        random.shuffle(tempList)
+        tempList = tempList[0:howManyMasked]
         
         for n in range(0, self.count):
             # Maybe make a create person method?!?
@@ -46,6 +53,12 @@ class World:
                 # Reduce one from the howManyInfected so it does exactly that many infected people
                 person.changeStatus("I")
                 howManyInfected -= 1
+            
+            # Black magic
+            for num in tempList:
+                if (num == n):
+                    person.hasMask = True
+                    print(n)
             
             personList.append(person)
             # Randomizing direction

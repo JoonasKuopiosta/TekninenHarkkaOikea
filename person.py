@@ -16,7 +16,7 @@ SUSPECTIBLE = "S"
 INFECTIOUS = "I"
 RESISTANT = "R"
 
-PERSON_SIZE = 1
+PERSON_SIZE = 5
 
 INFECTION_MULTIPLIER = 1.0
 
@@ -52,8 +52,15 @@ class Person:
         self.world = world
         
         center = graphics.Point(0,0)
-        self.circle = graphics.Circle(center, 5)
+        self.circle = graphics.Circle(center, PERSON_SIZE)
         self.circle.setFill('green')
+        
+        offset = round(PERSON_SIZE/2) + 6
+        upperLeft = graphics.Point(-offset, -offset)
+        lowerRight = graphics.Point(offset, offset)
+        self.rectangle = graphics.Rectangle(upperLeft, lowerRight)
+        self.rectangle.setOutline('black')
+        self.rectangle.setWidth(2)
         
         # Determines if the person is infected, but not yet infectious
         self.isInfected = False
@@ -295,4 +302,8 @@ class Person:
         return txt
     
     def getDraw(self):
-        return self.circle
+        
+        if (self.hasMask):
+            return [self.circle, self.rectangle]
+        
+        return [self.circle]
