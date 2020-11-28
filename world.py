@@ -90,13 +90,14 @@ class World:
                 # Check whether the person wants to end up somewhere around, too
                 if (obstacle.y0 <= nextCords.y <= obstacle.y1):
                     
-                    # NÄMÄ EI TOIMI: Pallerot edelleen törmää seinään - why?
+                    # We don't want the people to exactly touch the obstacle but bounce back
+                    # a couple of meters before it. That's why "-2" or "+2".
                     # Check if the person is approaching to the obstacle from the left:
-                    if (previousCords.x <= obstacle.x0 and nextCords.x >= obstacle.x0):
+                    if (previousCords.x <= obstacle.x0-2 and nextCords.x >= obstacle.x0-2):
                         return Vector2(-1,0)
                     
                     # Check if the person is approaching to the obstacle from the right:
-                    elif (previousCords.x >= obstacle.x0 and nextCords.x <= obstacle.x0):
+                    elif (previousCords.x >= obstacle.x0+2 and nextCords.x <= obstacle.x0+2):
                         return Vector2(1,0)
         
         # If false is returned we accept the nextCords
