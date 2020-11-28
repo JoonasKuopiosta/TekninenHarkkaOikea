@@ -43,9 +43,11 @@ class Person:
         # Would ideally be from 0 to 1
         self.riskOfNOTinfection = 1.0
         self.hasMask = False
+        self.quarantinable = False
+        self.inQuarantine = False
 
         # How fast is person, meters per minute
-        self.speed = random.random()*2 + 1
+        self.speed = random.random()*2 + 1 # also assigned in goOutOfQuarantine!
 
         # Unit vector
         self.directionVec = Vector2(0,0)
@@ -81,11 +83,11 @@ class Person:
         # - infection multiplier
         # (- delta time is moved to step)
         # - distance
-        exposure = INFECTION_MULTIPLIER
+        exposure = INFECTION_MULTIPLIER # right now: 1.0
         exposure *= self.distanceMultiplier(transmitter)
         
         if (self.hasMask):
-            # Recipant HAS a mask
+            # Recipient HAS a mask
             if (transmitter.hasMask):
                 # Transmitter HAS a mask
                 # => Both HAVE masks
@@ -94,7 +96,7 @@ class Person:
                 # Transmitter DOES NOT have a mask
                 exposure *= 0.3 # 30%
         else:
-            # Recipant DOES NOT have a mask
+            # Recipient DOES NOT have a mask
             if (transmitter.hasMask):
                 # Transmitter HAS a mask
                 exposure *= 0.05 # 5%
@@ -134,6 +136,7 @@ class Person:
     # Max = 1.0
     def exposurePropability(self):
         # Test if current exposure is more than min gap
+        # Joonas: onko tällä exposurella yhteyttä lähellä oleviin I-palloihin?
         exposure = 1 - self.riskOfNOTinfection
         propability = 0
         if (exposure >= POTENCY_MIN):
@@ -158,6 +161,7 @@ class Person:
             self.isInfected = True
         elif (newStatus == RESISTANT):
             self.circle.setFill('blue')
+            self.isInfected = False
             
 
 
@@ -167,7 +171,7 @@ class Person:
             
         
     # Run every step of simulation
-    def step(self, stepTime):
+    def step(self, stepTime, obstacleList):
         # Run at each step
         
         # If infection has been received
@@ -181,6 +185,9 @@ class Person:
         # If the Person is suspectible
         if (self.status == SUSPECTIBLE):
             if (not self.isInfected):
+                # Joonas: tarvitaanko tätä alla olevaa ollenkaan
+                # kun if (self.status == INFECTIOUS):-lauseessa myös tartutetaan lähellä olevia?
+                
                 # If not infected yet, roll the infection chance
                 # Probability for infection
                 probability = self.exposurePropability()
@@ -198,30 +205,26 @@ class Person:
                 if (self.timeSinceInfection >= fewDays):
                     # If enough time has passed change status
                     self.changeStatus(INFECTIOUS)
+                    if (self.quarantinable): # if the ball is one of the X % that go to quarantine
+                        if (not self.inQuarantine): # if the ball is not in quarantine yet
+                            self.goToQuarantine(obstacleList)
                     
-                    # Itämisaika has passed -> First symptoms are noticed
-                    # -> 70% of palleros must go to quarantine!
-                    # (the rest don't notice symptoms or don't care)
                     
-                    #self.goToQuarantine(self)
-                    
-                    # QUARANTINE MEANS:
-                        # ball sits still on the left side of the box with all
-                        # the other infected balls until X days has passed (7 days)
-                        
-                        # We need to keep quarantine area EMPTY from beginning.
-                        # In every iteration we check if self.timeSinceQuarantine >= week
-                        # if true -> release, if false -> pass
         
         if (self.status == INFECTIOUS):
             # As infectious go through every person
             
-            # If more than seven days has passed become resistant
+            # -> 70 % of palleros must go to quarantine!
+            # (the rest don't notice symptoms or don't care)
+            # tälle tn-luvulle tarvitaan perustelut!
+            
+            #self.goToQuarantine(self)
+            
+            # If more than seven days has passed become resistant (and get out of quarantine)
             sevenDays = 7*24*60
             if (self.timeSinceInfection >= sevenDays):
                 self.changeStatus(RESISTANT)
-                #self.goOutOfQuarantine(self)
-            else:
+            else: # Infecting others around:
                 for person in self.world.getPersonList():
                     # If the person is within maximum range
                     if (self.distanceTo(person) <= MAX_INFECTION_DISTANCE):
@@ -232,13 +235,75 @@ class Person:
         
         
         if (self.status == RESISTANT):
+            if (self.inQuarantine): # if the ball is in quarantine, release
+                self.goOutOfQuarantine(obstacleList)
             # Olli koodi
-            pass
             
                 
         # Reset exposure
         self.riskOfNOTinfection = 0
         return 1
+    
+    def goToQuarantine(self, obstacleList):
+        # QUARANTINE MEANS:
+            # If there is a quarantine box, X % (70 %) of balls should go there when status=INFECTED
+            # ball sits still in the box with all the other infected
+            # balls until status=RESISTANT (7 days has passed)
+            
+            # Sitting still: 
+                # self.speed = 0
+                # location = a random spot in the area
+            
+            # In every iteration we check if self.timeSinceQuarantine >= week
+            # if true -> release, if false -> pass
+        self.inQuarantine = True
+        self.speed = 0
+        self.locationInQuarantine(obstacleList)                 
+   
+    def locationInQuarantine(self, obstacleList):    
+        # Find the borders of the quarantine area
+        for obstacle in obstacleList:
+            if (obstacle.isQuarantine == 1):
+                # if the quarantine line is on the left side or in the middle
+                if (obstacle.location == "l" or obstacle.location == "m"):         
+                    randVec = randomVector(10, 10, obstacle.x0-10, self.world.height-10)
+                elif (obstacle.location == "r"): # if the quarantine box is on the right side   
+                    randVec = randomVector(obstacle.x0+10, 10, self.world.width-10, self.world.height-10)
+       
+        # Locate the ball randomly inside the quarantine area 
+       
+        self.x = randVec.x
+        self.y = randVec.y
+       
+    def goOutOfQuarantine(self, obstacleList):
+        # Getting out of quarantine means:
+            # the ball is placed in a random spot in the simulation area
+            # the ball is again free to move (it is given a speed)
+        self.locationOutsideQuarantine(obstacleList)
+        self.inQuarantine = False
+        self.speed = random.random()*2 + 1
+        
+    def locationOutsideQuarantine(self, obstacleList):
+        # Find a random location for the ball outside the quarantine area. This depends on the
+        # location of the quarantine box, which can be either on the left or the right side of the whole area.
+        # This function gives the ball a new, random position vector.
+        
+        for obstacle in obstacleList:
+            if (obstacle.isQuarantine == 1):
+                # if the quarantine line is on the left side or in the middle
+                if (obstacle.location == "l" or obstacle.location == "m"): 
+                    # Position the ball randomly in an area on the right of the x0:       
+                    randVec = randomVector(obstacle.x0+10, 10, self.world.width-10, self.world.height-10)
+                        
+                elif (obstacle.location == "r"):
+                    # Position the ball randomly in an area on the left of the x0:        
+                    randVec = randomVector(10, 10, obstacle.x0-10, self.world.height-10)
+        
+        # Locate the ball randomly outside the quarantine area 
+       
+        self.x = randVec.x
+        self.y = randVec.y
+                        
 
     def stepMove(self, stepTime):
 

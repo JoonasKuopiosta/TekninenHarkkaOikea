@@ -45,6 +45,8 @@ class VisualSimulation:
 
 
     def animationStep(self, personList, obstacleList):
+                
+                
         for person in personList:
             
             cords = self.worldCordsToScreen([person.x, person.y])
@@ -67,6 +69,7 @@ class VisualSimulation:
     
     def worldCordsToScreen(self, cords):
         
+        # person's xy-coordinates in the world:
         worldX = cords[0]
         worldY = cords[1]
         

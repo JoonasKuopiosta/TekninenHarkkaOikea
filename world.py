@@ -26,17 +26,18 @@ class World:
         obstacleList.append(obstacle)
         
         # creating the quarantine box on the left for infected individuals:
-        obstacle = Obstacle(1500, 0, 1500, self.height) # vertical line
-        obstacleList.append(obstacle)
-        
+        quarantine = Obstacle(1500, 0, 1500, self.height) # vertical line
+        quarantine.setQuarantine(width)
+        obstacleList.append(quarantine)
         
         #obstacle = Obstacle(0, 3000, 1500, 3000) # horizontal line
         #obstacleList.append(obstacle)
     
 
-    def generatePeople(self, howManyInfected, ratioOfMaskedPpl):
+    def generatePeople(self, howManyInfected, ratioOfMaskedPpl, ratioOfQuarantinable):
         
         howManyMasked = round(ratioOfMaskedPpl*self.count)
+        howManyQuarantinable = round(ratioOfQuarantinable*self.count)
         
         # Black magic
         tempList = list(range(self.count))
@@ -45,7 +46,28 @@ class World:
         
         for n in range(0, self.count):
             # Maybe make a create person method?!?
-            randVec = randomVector(10, 10, self.width-10, self.height-10)
+            
+            # GENERATE INITIAL LOCATIONS (x, y) FOR THE PEOPLE:
+            
+            # The area of simulation: 
+            left = 10
+            right = self.width-10
+            top = 10
+            bottom = self.height-10
+            
+            # If there is a quarantine box, no ball should be there in the beginning
+            for obstacle in obstacleList:
+                if (obstacle.isQuarantine == 1):
+                    if (obstacle.location == "l"): # if quarantine is on the left side of the area
+                        left = obstacle.x0
+                    elif (obstacle.location == "r"): # if quarantine is on the right side of the area
+                        right = obstacle.x0
+                    else: # if quarantine line happens to be in the middle of the area
+                        left = obstacle.x0 # the quarantine balls end up in the left of the area
+                        
+            # Now randVec will be taking a quarantine box into account:
+            randVec = randomVector(left, top, right, bottom)
+            
             person = Person(self, randVec, "S")
 
             # Generate as many infected people as we want
@@ -60,6 +82,11 @@ class World:
                     person.hasMask = True
                     print(n)
             
+            # 70% of individuals get the trait True in the generation order, not randomly (is there an issue?)
+            if (howManyQuarantinable > 0):
+                person.quarantinable = True
+                howManyQuarantinable -= 1
+                
             personList.append(person)
             # Randomizing direction
             randRads = random.random()*2*math.pi
@@ -114,7 +141,7 @@ class World:
     def step(self, stepTime):
 
         for person in personList:
-            person.step(stepTime)
+            person.step(stepTime, obstacleList)
             person.stepMove(stepTime)
     
 

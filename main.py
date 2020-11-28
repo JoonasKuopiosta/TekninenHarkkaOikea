@@ -48,35 +48,41 @@ def mainLoop():
     worldWidth  = 10000
     worldHeight = 10000
     worldPopulation = 50
+    
+    # call to initialize the simulation area and obstacles in it:
     _world = World(worldWidth, worldHeight, worldPopulation)
-    # How many infected at the beginning T0
-    infectedT0 = 1
-    # How many % of people use masks
-    ratioOfMaskedPpl = 0.2
+    
+    infectedT0 = 1 # How many infected at the beginning (T0)
     suspectibleT0 = worldPopulation - infectedT0
-    _world.generatePeople(infectedT0, ratioOfMaskedPpl) # input value is how many infected in the beginning
+    
+    # How many % of people use masks or obey quarantine
+    ratioOfMaskedPpl = 0.2
+    ratioOfQuarantine = 0.7 # make this 0 if this simulation does not include a quarantine!
+    
+    # Generate the people at T0:
+    _world.generatePeople(infectedT0, ratioOfMaskedPpl, ratioOfQuarantine) # input value is how many infected in the beginning
 
-    # Initializing the animation
+    # Initializing the animation with the people at T0:
     animation = VS(WIDTH, HEIGHT, worldWidth, worldHeight, _world.getPersonList(), _world.getObstacleList())
 
-    # The first values of the SIR-model are sent to dataProcessing for drawing a graph:
+    # The first values of the SIR-model are sent to dataProcessing for starting drawing a graph:
     # sends in a personList which is in the form (I, S, S, S, S, S, ...)
-    # from the list we need to find the nodes "I" to draw the graph of infected day by day
     newDataProcessing.initial(infectedT0, suspectibleT0)
     
     time.sleep(3)
 
+    # ITERATION THROUGH THE TIMESPAN:
     noDays = 24 # simulation is done on a 14 days period
     max = 24*(noDays-1) 
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES)
 
-        # process data "day by day" for plotting graphs
+        # PLOTTING GRAPHS: process data "day by day" to plot SIR-graphs
         if i % (24) == 0:
             # list of infected is updated in every round
             newDataProcessing.dataStep(_world.getPersonList())
         
-        # animate data every x iteration
+        # ANIMATION: animate data every x iteration
         if i % (1) == 0:
             # animates the given data
             animation.animationStep(_world.getPersonList(), _world.getObstacleList())
