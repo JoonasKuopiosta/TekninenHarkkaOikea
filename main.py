@@ -50,12 +50,12 @@ def mainLoop():
     # call to initialize the simulation area and obstacles in it:
     _world = World(worldWidth, worldHeight, worldPopulation)
     
-    infectedT0 = 10 # How many infected at the beginning (T0)
+    infectedT0 = 4 # How many infected at the beginning (T0)
     suspectibleT0 = worldPopulation - infectedT0
     
     # How many % of people use masks or obey quarantine
-    ratioOfMaskedPpl = 0.2
-    ratioOfQuarantine = 0.7 # make this 0 if this simulation does not include a quarantine!
+    ratioOfMaskedPpl = 0.9
+    ratioOfQuarantine = 0.99 # make this 0 if this simulation does not include a quarantine!
     
     # Generate the people at T0:
     _world.generatePeople(infectedT0, ratioOfMaskedPpl, ratioOfQuarantine) # input value is how many infected in the beginning
