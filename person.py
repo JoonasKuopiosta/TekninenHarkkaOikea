@@ -17,6 +17,7 @@ INFECTIOUS = "I"
 RESISTANT = "R"
 
 PERSON_SIZE = 5
+PERSON_WIDTH = 1 # individual person's width
 
 INFECTION_MULTIPLIER = 1
 
@@ -123,7 +124,7 @@ class Person:
         distance = self.distanceTo(person)
         if (distance >= MAX_INFECTION_DISTANCE):
             return 0
-        elif (distance <= PERSON_SIZE):
+        elif (distance <= PERSON_WIDTH):
             distance = 1 # Floor distance to unit size
         
         return (distance)**(-2) # inverse ^2

@@ -19,11 +19,11 @@ class World:
         
         # Obstacle should be created in form: x0, y0, x1, y1, win
         #   (x0,y0) = start, (x1,y1) = end
-        obstacle = Obstacle(5000, 0, 5000, 6000) # just a fence in the middle of the area
-        obstacleList.append(obstacle)
+        #obstacle = Obstacle(5000, 0, 5000, 6000) # just a fence in the middle of the area
+        #obstacleList.append(obstacle)
         
-        obstacle = Obstacle(5000, 8000, 5000, 10000) # just a fence in the middle of the area
-        obstacleList.append(obstacle)
+        #obstacle = Obstacle(5000, 8000, 5000, 10000) # just a fence in the middle of the area
+        #obstacleList.append(obstacle)
         
         # creating the quarantine box on the left for infected individuals:
         quarantine = Obstacle(1500, 0, 1500, self.height) # vertical line
