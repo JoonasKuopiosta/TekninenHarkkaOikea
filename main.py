@@ -30,7 +30,7 @@ MAX_INFECTION_DISTANCE = 10
 # The length of one iteration in minutes
 # 60 = one iteration is one hour
 # 60*24 = 1440 = one iteration is one day
-ITERATION_STEP_IN_MINUTES = 60
+ITERATION_STEP_IN_MINUTES = 10
 
 # TODO:
 # Fix vector to use funcs, so vector is only one ot use funcs
@@ -72,18 +72,19 @@ def mainLoop():
     time.sleep(3)
 
     # ITERATION THROUGH THE TIMESPAN:
-    noDays = 24 # simulation is done on a 14 days period
-    max = 24*(noDays-1) 
+    noDays = 14 # simulation is done on a 14 days period
+    max = round(24*(noDays-1)*60/ITERATION_STEP_IN_MINUTES)
+    
     for i in tqdm(range(max)):
-        _world.step(ITERATION_STEP_IN_MINUTES)
+        _world.step(ITERATION_STEP_IN_MINUTES) # 10 min
 
         # PLOTTING GRAPHS: process data "day by day" to plot SIR-graphs
-        if i % (24) == 0:
+        if i % (24*60/ITERATION_STEP_IN_MINUTES) == 0:
             # list of infected is updated in every round
             newDataProcessing.dataStep(_world.getPersonList())
         
         # ANIMATION: animate data every x iteration
-        if i % (1) == 0:
+        if i % (2) == 0:
             # animates the given data
             animation.animationStep(_world.getPersonList(), _world.getObstacleList())
             time.sleep(0.01)
