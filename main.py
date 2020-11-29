@@ -25,8 +25,6 @@ INFECTION_MULTIPLIER = 0.1
 POTENCY_MIN = 0.1
 POTENCY_100 = 10
 
-MAX_INFECTION_DISTANCE = 10
-
 # The length of one iteration in minutes
 # 60 = one iteration is one hour
 # 60*24 = 1440 = one iteration is one day
