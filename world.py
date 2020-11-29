@@ -39,10 +39,15 @@ class World:
         howManyMasked = round(ratioOfMaskedPpl*self.count)
         howManyQuarantinable = round(ratioOfQuarantinable*self.count)
         
-        # Black magic
-        tempList = list(range(self.count))
-        random.shuffle(tempList)
-        tempList = tempList[0:howManyMasked]
+        # Black magic for masks
+        tempListMask = list(range(self.count))
+        random.shuffle(tempListMask)
+        tempListMask = tempListMask[0:howManyMasked]
+
+        # Black magic for quarantinable
+        tempListQuarantinable = list(range(self.count))
+        random.shuffle(tempListQuarantinable)
+        tempListQuarantinable = tempListQuarantinable[0:howManyQuarantinable]
         
         for n in range(0, self.count):
             # Maybe make a create person method?!?
@@ -76,16 +81,17 @@ class World:
                 person.changeStatus("I")
                 howManyInfected -= 1
             
-            # Black magic
-            for num in tempList:
+            # Black magic for masks
+            for num in tempListMask:
                 if (num == n):
                     person.hasMask = True
-                    print(n)
             
-            # 70% of individuals get the trait True in the generation order, not randomly (is there an issue?)
-            if (howManyQuarantinable > 0):
-                person.quarantinable = True
-                howManyQuarantinable -= 1
+            
+            # Black magic for quarantinable
+            for num in tempListQuarantinable:
+                if (num == n):
+                    person.quarantinable = True
+
                 
             personList.append(person)
             # Randomizing direction

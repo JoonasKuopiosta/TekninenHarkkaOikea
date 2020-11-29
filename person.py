@@ -18,10 +18,7 @@ RESISTANT = "R"
 
 PERSON_SIZE = 5
 
-INFECTION_MULTIPLIER = 1.0
-
-POTENCY_MIN = 0.1
-POTENCY_100 = 10
+INFECTION_MULTIPLIER = 1
 
 # distance in meters
 MAX_INFECTION_DISTANCE = 3
@@ -132,22 +129,6 @@ class Person:
         return (distance)**(-2) # inverse ^2
     
     
-    # Min = 0.0
-    # Max = 1.0
-    def exposurePropability(self):
-        # Test if current exposure is more than min gap
-        # Joonas: onko tällä exposurella yhteyttä lähellä oleviin I-palloihin?
-        exposure = 1 - self.riskOfNOTinfection
-        propability = 0
-        if (exposure >= POTENCY_MIN):
-            if (exposure >= POTENCY_100):
-                propability = 1
-            else:
-                propability = exposure / POTENCY_100
-        
-        return propability
-    
-    
     # Use this when changing status!!!
     def changeStatus(self, newStatus):
         self.status = newStatus
@@ -171,6 +152,7 @@ class Person:
             
         
     # Run every step of simulation
+    # stepTime = ITERATION_STEPS_IN_MINUTES
     def step(self, stepTime, obstacleList):
         # Run at each step
         
@@ -190,10 +172,12 @@ class Person:
                 
                 # If not infected yet, roll the infection chance
                 # Probability for infection
-                probability = self.exposurePropability()
-                # deltaTime in seconds divided by hour
-                probability *= stepTime / (60*60)
-                if( random.random() < probability):
+                probability = 1 - self.riskOfNOTinfection
+
+                # Second parameter is how many stepTimes in one hour
+                probability = funcs.getPValue(probability, (60/stepTime))
+
+                if ( random.random() < probability):
                     # Sets the isInfected to True
                     self.isInfected = True
             else:
@@ -241,7 +225,7 @@ class Person:
             
                 
         # Reset exposure
-        self.riskOfNOTinfection = 0
+        self.riskOfNOTinfection = 1.0
         return 1
     
     def goToQuarantine(self, obstacleList):
