@@ -47,7 +47,7 @@ class Person:
         self.inQuarantine = False
 
         # How fast is person, meters per minute
-        self.speed = random.random()*2 + 1 # also assigned in goOutOfQuarantine!
+        self.speed = random.random()*0 + 1 # also assigned in goOutOfQuarantine!
 
         # Unit vector
         self.directionVec = Vector2(0,0)
@@ -156,12 +156,12 @@ class Person:
         if (newStatus == SUSPECTIBLE):
             self.circle.setFill('green')
             self.isInfected = False
+            self.timeSinceInfection = 0
         elif (newStatus == INFECTIOUS):
             self.circle.setFill('red')
             self.isInfected = True
         elif (newStatus == RESISTANT):
             self.circle.setFill('blue')
-            self.isInfected = False
             
 
 
@@ -235,9 +235,12 @@ class Person:
         
         
         if (self.status == RESISTANT):
+            fourteenDays = 14*24*60
+            if (self.timeSinceInfection >= fourteenDays):
+                self.changeStatus(SUSPECTIBLE)
             if (self.inQuarantine): # if the ball is in quarantine, release
                 self.goOutOfQuarantine(obstacleList)
-            # Olli koodi
+            
             
                 
         # Reset exposure
