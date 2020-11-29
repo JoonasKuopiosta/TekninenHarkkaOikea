@@ -43,8 +43,8 @@ def mainLoop():
     print("Beginning of main loop")
 
     # width, height, population
-    worldWidth  = 10000
-    worldHeight = 10000
+    worldWidth  = 500
+    worldHeight = 500
     worldPopulation = 50
     
     # call to initialize the simulation area and obstacles in it:

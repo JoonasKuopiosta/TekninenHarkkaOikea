@@ -44,7 +44,7 @@ class Person:
         self.inQuarantine = False
 
         # How fast is person, meters per minute
-        self.speed = random.random()*2 + 1 # also assigned in goOutOfQuarantine!
+        self.speed = random.random()*0.5 + 1 # also assigned in goOutOfQuarantine!
 
         # Unit vector
         self.directionVec = Vector2(0,0)
