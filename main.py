@@ -43,14 +43,14 @@ def mainLoop():
     print("Beginning of main loop")
 
     # width, height, population
-    worldWidth  = 10000
-    worldHeight = 10000
+    worldWidth  = 500
+    worldHeight = 500
     worldPopulation = 50
     
     # call to initialize the simulation area and obstacles in it:
     _world = World(worldWidth, worldHeight, worldPopulation)
     
-    infectedT0 = 1 # How many infected at the beginning (T0)
+    infectedT0 = 10 # How many infected at the beginning (T0)
     suspectibleT0 = worldPopulation - infectedT0
     
     # How many % of people use masks or obey quarantine
