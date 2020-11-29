@@ -26,7 +26,7 @@ class World:
         #obstacleList.append(obstacle)
         
         # creating the quarantine box on the left for infected individuals:
-        quarantine = Obstacle(1500, 0, 1500, self.height) # vertical line
+        quarantine = Obstacle(self.width/4, 0, self.width/4, self.height) # vertical line
         quarantine.setQuarantine(width)
         obstacleList.append(quarantine)
         

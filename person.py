@@ -24,6 +24,8 @@ INFECTION_MULTIPLIER = 1
 # distance in meters
 MAX_INFECTION_DISTANCE = 3
 
+NORMAL_WALK_SPEED = 0.0025
+
 
 class Person:
 
@@ -45,7 +47,7 @@ class Person:
         self.inQuarantine = False
 
         # How fast is person, meters per minute
-        self.speed = random.random()*0 + 1 # also assigned in goOutOfQuarantine!
+        self.speed = NORMAL_WALK_SPEED # also assigned in goOutOfQuarantine!
 
         # Unit vector
         self.directionVec = Vector2(0,0)
@@ -269,7 +271,7 @@ class Person:
             # the ball is again free to move (it is given a speed)
         self.locationOutsideQuarantine(obstacleList)
         self.inQuarantine = False
-        self.speed = random.random()*2 + 1
+        self.speed = NORMAL_WALK_SPEED
         
     def locationOutsideQuarantine(self, obstacleList):
         # Find a random location for the ball outside the quarantine area. This depends on the
@@ -302,6 +304,7 @@ class Person:
         movement = self.directionVec.getClone()
         movement.multiply(self.speed)
         movement.multiply(stepTime)
+        movement.multiply(60)
         
         # Sum movement to current position to get next position
         nextPosition.sumVec(movement)
