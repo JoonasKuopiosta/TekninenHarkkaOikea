@@ -221,9 +221,11 @@ class Person:
         
         
         if (self.status == RESISTANT):
+            # The individual can turn suspectible again after a certain time:
             fourteenDays = 14*24*60
             if (self.timeSinceInfection >= fourteenDays):
                 self.changeStatus(SUSPECTIBLE)
+                
             if (self.inQuarantine): # if the ball is in quarantine, release
                 self.goOutOfQuarantine(obstacleList)
             

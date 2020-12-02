@@ -92,7 +92,9 @@ def final(noDays):
     
     fig.update_layout(
         title="Tartunnan leviäminen populaatiossa",
-        xaxis_title="Päivä",
+        xaxis=dict(
+            title='Päivä',
+            tickmode='linear'),
         yaxis_title="Tapausten lukumäärä",
         legend_title="Kuvaajat",
         font=dict(
