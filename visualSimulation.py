@@ -1,5 +1,8 @@
 from graphics import *
 import time
+from PIL import ImageGrab
+import win32gui
+import math
 
 class VisualSimulation:
 
@@ -16,8 +19,23 @@ class VisualSimulation:
     
     
     def graphicsInit(self, personList, obstacleList):
-        win = GraphWin(width = self.width, height = self.height, autoflush=False) # create a window
+        win = GraphWin(title="Tekninen harkka simulaatio", width = self.width, height = self.height, autoflush=False) # create a window
         win.setCoords(0, 0, self.width, self.height)
+
+        # Time stamps in an ugly manner
+        # For days
+        textAnchorDays = Point(self.width - 110, self.height - 10)
+        self.timeStampDays = Text(textAnchorDays, "asdasdasdasd")
+        self.timeStampDays.setTextColor('black')
+        self.timeStampDays.setSize(12)
+        self.timeStampDays.draw(win)
+
+        # For hours
+        textAnchorHours = Point(self.width - 40, self.height - 10)
+        self.timeStampHours = Text(textAnchorHours, "asdasdasdasd")
+        self.timeStampHours.setTextColor('black')
+        self.timeStampHours.setSize(12)
+        self.timeStampHours.draw(win)
         
         for person in personList:
             
@@ -41,11 +59,14 @@ class VisualSimulation:
             newLine.draw(win)
         
         return win
+
+
+    def animationStep(self, personList, obstacleList, timeInMinutes):
         
-
-
-    def animationStep(self, personList, obstacleList):
-                
+        # Updating times in an ugly fashion
+        timeList = self.timeFormatter(timeInMinutes)
+        self.timeStampDays.setText("Days:" + str(timeList[0]))
+        self.timeStampHours.setText("Hours:" + str(timeList[1]))
                 
         for person in personList:
             
@@ -60,11 +81,36 @@ class VisualSimulation:
         
         self.win.update()
     
+
+    def timeFormatter(self, minutes):
+        
+        # How many days in minutes
+        fullDays = math.floor(minutes / (60*24))
+        # Substract the fullDays worth of minutes from the total
+        minutes -= fullDays * 60*24
+
+        fullHours = math.floor(minutes / (60))
+
+        return [fullDays, fullHours]
+    
     
     def animationFinal(self):
         time.sleep(1)
         self.win.getMouse() # Waits the user to click the screen
         self.win.close()
+    
+
+    def takeSnapshot(self, imageNumber):
+
+        # Find the simulation window
+        hwnd = win32gui.FindWindow(None, r'Tekninen harkka simulaatio')
+        win32gui.SetForegroundWindow(hwnd)
+        dimensions = win32gui.GetWindowRect(hwnd)
+
+        # Takes the screenshot and saves it with index number
+        image = ImageGrab.grab(dimensions)
+        fileName = "./images/TekninenSimulaatio_" + str(imageNumber) + ".jpg"
+        image.save(fileName, "JPEG")
     
     
     def worldCordsToScreen(self, cords):
