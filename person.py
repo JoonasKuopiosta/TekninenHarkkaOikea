@@ -123,10 +123,9 @@ class Person:
     # Min = 0.0
     # Max = 1.0
     def distanceMultiplier(self, person):
+        
         distance = self.distanceTo(person)
-        if (distance >= MAX_INFECTION_DISTANCE):
-            return 0
-        elif (distance <= PERSON_WIDTH):
+        if (distance <= PERSON_WIDTH):
             distance = 1 # Floor distance to unit size
         
         return (distance)**(-2) # inverse ^2
