@@ -67,11 +67,19 @@ def mainLoop():
     # sends in a personList which is in the form (I, S, S, S, S, S, ...)
     newDataProcessing.initial(infectedT0, suspectibleT0)
     
-    time.sleep(3)
+    # Gives the user time to get ready
+    time.sleep(5)
+
+    # Number to keep track of snapshot images
+    imageOrderNumbr = 0
+    # How many images?
+    howManyImages = 6
 
     # ITERATION THROUGH THE TIMESPAN:
-    noDays = 14 # simulation is done on a 14 days period
+    noDays = 7 # simulation is done on a 14 days period
     max = round(24*(noDays-1)*60/ITERATION_STEP_IN_MINUTES)
+
+    imagIterValue = round(max/howManyImages)
     
     for i in tqdm(range(max)):
         _world.step(ITERATION_STEP_IN_MINUTES) # 10 min
@@ -84,8 +92,13 @@ def mainLoop():
         # ANIMATION: animate data every x iteration
         if i % (2) == 0:
             # animates the given data
-            animation.animationStep(_world.getPersonList(), _world.getObstacleList())
+            animation.animationStep(_world.getPersonList(), _world.getObstacleList(), (i*ITERATION_STEP_IN_MINUTES))
             time.sleep(0.01)
+        
+        # False True parameter for easy adjustment
+        if (i % (imagIterValue) == 0) and (False):
+            animation.takeSnapshot(imageOrderNumbr)
+            imageOrderNumbr += 1
     
     newDataProcessing.final(noDays)
     
