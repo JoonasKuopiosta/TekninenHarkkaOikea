@@ -65,7 +65,7 @@ class VisualSimulation:
         
         # Updating times in an ugly fashion
         timeList = self.timeFormatter(timeInMinutes)
-        self.timeStampDays.setText("Days:" + str(timeList[0]))
+        self.timeStampDays.setText("Days:" + str(timeList[0]+1))
         self.timeStampHours.setText("Hours:" + str(timeList[1]))
                 
         for person in personList:

@@ -73,21 +73,33 @@ def final(noDays):
         go.Scatter(
             x = listOfDays,
             y = suspectibleSim,
-            name = "S"
+            name = "S",
+            mode = 'lines',
+            marker = dict(
+                color = "#009E73"
+            )
         ))
 
     fig.add_trace(
         go.Scatter(
             x = listOfDays,
             y = infectedSim,
-            name = "I"
+            name = "I",
+            mode = 'lines',
+            marker = dict(
+                color = "#D55E0D"
+            )
         ))
     
     fig.add_trace(
         go.Scatter(
             x = listOfDays,
             y = resistantSim,
-            name = "R"
+            name = "R",
+            mode = 'lines',
+            marker = dict(
+                color = "#0072B2"
+            )
         ))
     
     fig.update_layout(

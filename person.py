@@ -16,6 +16,11 @@ SUSPECTIBLE = "S"
 INFECTIOUS = "I"
 RESISTANT = "R"
 
+    
+GREEN = "#009E73"
+VERMIL = "#D55E00"
+BLUE = "#0072B2"
+
 PERSON_SIZE = 5
 PERSON_WIDTH = 1 # individual person's width
 
@@ -55,7 +60,7 @@ class Person:
         
         center = graphics.Point(0,0)
         self.circle = graphics.Circle(center, PERSON_SIZE)
-        self.circle.setFill('green')
+        self.circle.setFill(GREEN)
         
         offset = round(PERSON_SIZE/2) + 6
         upperLeft = graphics.Point(-offset, -offset)
@@ -137,14 +142,14 @@ class Person:
         
         # Change the buble color according to status
         if (newStatus == SUSPECTIBLE):
-            self.circle.setFill('green')
+            self.circle.setFill(GREEN)
             self.isInfected = False
             self.timeSinceInfection = 0
         elif (newStatus == INFECTIOUS):
-            self.circle.setFill('red')
+            self.circle.setFill(VERMIL)
             self.isInfected = True
         elif (newStatus == RESISTANT):
-            self.circle.setFill('blue')
+            self.circle.setFill(BLUE)
             
 
 
@@ -168,10 +173,7 @@ class Person:
         
         # If the Person is suspectible
         if (self.status == SUSPECTIBLE):
-            if (not self.isInfected):
-                # Joonas: tarvitaanko tätä alla olevaa ollenkaan
-                # kun if (self.status == INFECTIOUS):-lauseessa myös tartutetaan lähellä olevia?
-                
+            if (not self.isInfected):                
                 # If not infected yet, roll the infection chance
                 # Probability for infection
                 probability = 1 - self.riskOfNOTinfection
@@ -222,9 +224,9 @@ class Person:
         
         if (self.status == RESISTANT):
             # The individual can turn suspectible again after a certain time:
-            fourteenDays = 14*24*60
-            if (self.timeSinceInfection >= fourteenDays):
-                self.changeStatus(SUSPECTIBLE)
+            #fourteenDays = 14*24*60
+            #if (self.timeSinceInfection >= fourteenDays):
+            #    self.changeStatus(SUSPECTIBLE)
                 
             if (self.inQuarantine): # if the ball is in quarantine, release
                 self.goOutOfQuarantine(obstacleList)

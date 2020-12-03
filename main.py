@@ -54,8 +54,8 @@ def mainLoop():
     suspectibleT0 = worldPopulation - infectedT0
     
     # How many % of people use masks or obey quarantine
-    ratioOfMaskedPpl = 0.9
-    ratioOfQuarantine = 0.99 # make this 0 if this simulation does not include a quarantine!
+    ratioOfMaskedPpl = 0
+    ratioOfQuarantine = 0 # make this 0 if this simulation does not include a quarantine!
     
     # Generate the people at T0:
     _world.generatePeople(infectedT0, ratioOfMaskedPpl, ratioOfQuarantine) # input value is how many infected in the beginning
@@ -73,11 +73,11 @@ def mainLoop():
     # Number to keep track of snapshot images
     imageOrderNumbr = 0
     # How many images?
-    howManyImages = 6
+    howManyImages = 5
 
     # ITERATION THROUGH THE TIMESPAN:
     noDays = 7 # simulation is done on a 14 days period
-    max = round(24*(noDays-1)*60/ITERATION_STEP_IN_MINUTES)
+    max = round(24*(noDays)*60/ITERATION_STEP_IN_MINUTES)
 
     imagIterValue = round(max/howManyImages)
     
@@ -96,7 +96,7 @@ def mainLoop():
             time.sleep(0.01)
         
         # False True parameter for easy adjustment
-        if (i % (imagIterValue) == 0) and (False):
+        if (i % (imagIterValue) == 0) and (True):
             animation.takeSnapshot(imageOrderNumbr)
             imageOrderNumbr += 1
     
