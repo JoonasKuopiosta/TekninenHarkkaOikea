@@ -4,6 +4,13 @@ from PIL import ImageGrab
 import win32gui
 import math
 
+GREEN = "#009E73"
+VERMIL = "#D55E00"
+BLUE = "#0072B2"
+
+colorList = [GREEN, VERMIL, BLUE]
+typeList = ["Suspectible", "Infectious", "Resistant"]
+
 class VisualSimulation:
 
     def __init__(self, width, height, worldWidth, worldHeight, personList, obstacleList):
@@ -36,6 +43,13 @@ class VisualSimulation:
         self.timeStampHours.setTextColor('black')
         self.timeStampHours.setSize(12)
         self.timeStampHours.draw(win)
+        
+        for i in range(0, len(colorList)):
+            textAnchor = Point(self.width - 50, self.height - (27 + i*17))
+            text = Text(textAnchor, typeList[i])
+            text.setTextColor(colorList[i])
+            text.setSize(13)
+            text.draw(win)
         
         for person in personList:
             
